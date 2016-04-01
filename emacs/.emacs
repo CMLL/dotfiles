@@ -110,7 +110,7 @@
 
 ;; Color theme
 ;;(load-theme 'railscasts t nil)
-;;(load-theme 'base16-tomorrow-dark t nil)
+;;(load-theme 'base16-tomorrow-light t nil)
 (load-theme 'distinguished t)
 
 ;; Autoload js mode
@@ -121,9 +121,6 @@
 
 ;; Elpy
 (elpy-enable)
-
-;; Enable company mode
-(global-company-mode)
 
 ;; Rope
 (setq emacs-config-path "~/.emacs.d/")
