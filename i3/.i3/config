@@ -27,7 +27,7 @@ font pango:Inconsolata 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec sakura
+bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -92,16 +92,16 @@ bindsym $mod+a focus parent
 
 # workspaces
 #
-set $w1 "1: dev"
-set $w2 "2: term"
-set $w3 "3: web"
-set $w4 "4: music"
-set $w5 "5: slack"
-set $w6 "6: servers"
-set $w7 "7: remote servers"
-set $w8 "8: tails"
-set $w9 "9: database"
-set $w10 "10: "
+set $w1 "1: "
+set $w2 "2: "
+set $w3 "3: "
+set $w4 "4: "
+set $w5 "5: "
+set $w6 "6: "
+set $w7 "7: "
+set $w8 "8: "
+set $w9 "9: "
+set $w10 "10: "
 
 # switch to workspace
 bindsym $mod+1 workspace $w1
@@ -170,40 +170,36 @@ exec --no-startup-id syndaemon -i 0.5 -d
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
-exec --no-startup-id xrandr --output HDMI1 --rotate right --primary --output eDP1
+# exec --no-startup-id xrandr --output HDMI1 --rotate right --primary --output eDP1
 
 # window controls
 #
 assign [class="google-chrome"] $w3
-assign [class="Spotify"] $w4
 assign [class="Slack"] $w5
-assign [class="Emacs24"] $w1
 assign [class="Valentina Studio"] $w9
 
 # Gaps
 #
-gaps inner 10
-gaps outer 10
-
-# smart_gaps on
+gaps inner 16
+gaps outer 8
 
 set $bg-color #424242
 set $active-text-color #212121
-set $active-bg-color #df624b
-set $inactive-bg-color #d9b38c
+set $active-bg-color #ffffff
+set $inactive-bg-color #001a33
 set $text-color #f3f4f5
-set $inactive-text-color #212121
+set $inactive-text-color #ffffff
 set $white #e6e1dc
 
 # Borders
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
         strip_workspace_numbers yes
         status_command i3blocks
-        font pango: Inconsolata 12
+        font pango: Source Code Pro 12
         colors {
             background $inactive-bg-color
             focused_workspace $active-bg-color $active-bg-color $active-text-color
@@ -213,13 +209,24 @@ bar {
         position top
 }
 
-exec --no-startup-id feh --bg-fill /home/cllamach/Pictures/bugs.png
-
 # Switching to rofi instead of dmenu
 bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
 
 # Starting apps
-exec --no-startup-id slack
-exec --no-startup-id google-chrome
-exec --no-startup-id spotify
 exec --no-startup-id redshift ||  redshift -l 41.90:-87.64
+exec --no-startup-id variety
+exec --no-startup-id slack
+exec --no-startup-id emacs
+
+# Caps to backspace
+exec --no-startup-id setxkbmap -option caps:backspace
+
+# Screen layout
+exec --no-startup-id ./.triple.sh
+
+# Compton and wallpaper
+exec --no-startup-id compton -b
+exec --no-startup-id feh --bg-fill .wallpaper.png
+
+# Keyboard layout
+exec --no-startup-id setxkbmp us altgr-intl

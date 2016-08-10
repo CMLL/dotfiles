@@ -1,8 +1,5 @@
 ;; MyEmacs configuration options.
 
-;; Load auto bracket
-(electric-pair-mode)
-
 ;; Spaces instead of tabs
 (setq indent-tabs-mode nil)
 

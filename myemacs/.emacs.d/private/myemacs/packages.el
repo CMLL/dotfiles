@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(defconst myemacs-packages '(python-mode elpy full-ack flycheck pyvenv ibuffer))
+(defconst myemacs-packages '(elpy ));;flycheck))
   "The list of Lisp packages required by the myemacs layer.
 
 Each entry is either:
@@ -44,7 +44,6 @@ Each entry is either:
 
     - :excluded (t or nil): Prevent the package from being loaded
       if value is non-nil
-
     - :location: Specify a custom installation location.
       The following values are legal:
 
@@ -58,45 +57,14 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
 
 (defun myemacs/init-elpy ()
-  (use-package elpy)
-  )
-
-(defun myemacs/post-init-elpy ()
-  (define-key global-map (kbd "M-i") 'elpy-shell-switch-to-shell)
-  (define-key global-map (kbd "M-c") 'elpy-check)
-  (define-key global-map (kbd "M-a") 'elpy-test)
-  )
-
-(defun myemacs/init-pyvenv ()
-  (define-key global-map (kbd "M-v") 'pyvenv-workon)
-  )
-
-(defun myemacs/init-full-ack ()
-  (use-package full-ack)
-  )
-
-(defun myemacs/init-flycheck ()
-  (use-package flycheck
+  (use-package elpy
     :init
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
-  )
+    (elpy-enable))
+ )
 
-(defun myemacs/post-init-flycheck ()
-  (when (require 'flycheck nil t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
-  )
-
-(defun myemacs/init-ibuffer ()
-  (use-package ibuffer
-    :init
-    (autoload 'ibuffer "ibuffer" "List buffers." t))
-  )
-
-(defun myemacs/post-init-ibuffer ()
-  (global-set-key (kbd "M-b") 'ibuffer)
-  )
-
+;;(defun myemacs/init-flycheck ()
+;;  (use-package flycheck
+;;               :init
+;;              (global-flycheck-mode)))
 
 ;;; packages.el ends here
