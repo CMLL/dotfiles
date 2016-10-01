@@ -142,7 +142,7 @@ map <F2> :NERDTreeToggle<CR>
 autocmd BufWritePre * :%s/\s\+$//e
 
 "IPDB import statement
-autocmd FileType python ab itr from ipdb import set_trace; set_trace()  # BREAKPOINT
+autocmd FileType python ab tr from ipdb import set_trace; set_trace()  # BREAKPOINT
 
 "GUI
 set showtabline=2
