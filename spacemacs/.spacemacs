@@ -35,7 +35,7 @@ values."
      ;; spell-checking
      ;; syntax-checking
      version-control
-     ;; themes-megapack
+     themes-megapack
      ;; clojure
      python
      ;; ansible
@@ -101,7 +101,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(wombat
+   dotspacemacs-themes '(flatland
+                         wombat
                          spacemacs-dark
                          spacemacs-light
                          solarized-light
@@ -112,8 +113,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Andale Mono"
-                               :size 14
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -267,6 +268,9 @@ you should place you code here."
   ;; Buffer
   (define-key global-map (kbd "M-b") 'helm-buffers-list)
   (menu-bar-mode nil)
+
+  ;; Font
+  (spacemacs/set-default-font '("Andale Mono" :size 14))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -280,7 +284,7 @@ you should place you code here."
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "c4a784404a2a732ef86ee969ab94ec8b8033aee674cd20240b8addeba93e1612" "44eec3c3e6e673c0d41b523a67b64c43b6e38f8879a7969f306604dcf908832c" "868f73b5cf78e72ca2402e1d48675e49cc9a9619c5544af7bf216515d22b58e7" "b0ab5c9172ea02fba36b974bbd93bc26e9d26f379c9a29b84903c666a5fde837" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "70b51a849b665f50a97a028c44cec36b398398357d8f7c19d558fe832b91980f" "e56ee322c8907feab796a1fb808ceadaab5caba5494a50ee83a13091d5b1a10c" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "45712b65018922c9173439d9b1b193cb406f725f14d02c8c33e0d2cdad844613" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "4af6fad34321a1ce23d8ab3486c662de122e8c6c1de97baed3aa4c10fe55e060" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "0820d191ae80dcadc1802b3499f84c07a09803f2cb90b343678bdb03d225b26b" "77c65d672b375c1e07383a9a22c9f9fc1dec34c8774fe8e5b21e76dca06d3b09" "3632cf223c62cb7da121be0ed641a2243f7ec0130178722554e613c9ab3131de" "f64c9f8b4241b680b186f4620afb9c82fa2a76cf4498a7431f90db59bb1892eb" "c4465c56ee0cac519dd6ab6249c7fd5bb2c7f7f78ba2875d28a50d3c20a59473" "b85fc9f122202c71b9884c5aff428eb81b99d25d619ee6fde7f3016e08515f07" "19ba41b6dc0b5dd34e1b8628ad7ae47deb19f968fe8c31853d64ea8c4df252b8" "3b0a350918ee819dca209cec62d867678d7dac74f6195f5e3799aa206358a983" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "f04122bbc305a202967fa1838e20ff741455307c2ae80a26035fbf5d637e325f" "2bed8550c6f0a5ce635373176d5f0e079fb4fb5919005bfa743c71b5eed29d81" "0155b3b94f6d5bce0275a15bc662be4f6f9f3284f9e469ca4ab1bd67ff9b5222" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" default)))
+    ("ab04c00a7e48ad784b52f34aa6bfa1e80d0c3fcacc50e1189af3651013eb0d58" "7e376fb329a0e46a04e8285b0e45199a083f98c69b0e1039ec1cb1d366e66e9c" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "603a9c7f3ca3253cb68584cb26c408afcf4e674d7db86badcfe649dd3c538656" "40bc0ac47a9bd5b8db7304f8ef628d71e2798135935eb450483db0dbbfff8b11" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "c4a784404a2a732ef86ee969ab94ec8b8033aee674cd20240b8addeba93e1612" "44eec3c3e6e673c0d41b523a67b64c43b6e38f8879a7969f306604dcf908832c" "868f73b5cf78e72ca2402e1d48675e49cc9a9619c5544af7bf216515d22b58e7" "b0ab5c9172ea02fba36b974bbd93bc26e9d26f379c9a29b84903c666a5fde837" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "70b51a849b665f50a97a028c44cec36b398398357d8f7c19d558fe832b91980f" "e56ee322c8907feab796a1fb808ceadaab5caba5494a50ee83a13091d5b1a10c" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "45712b65018922c9173439d9b1b193cb406f725f14d02c8c33e0d2cdad844613" "71ecffba18621354a1be303687f33b84788e13f40141580fa81e7840752d31bf" "4af6fad34321a1ce23d8ab3486c662de122e8c6c1de97baed3aa4c10fe55e060" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "0820d191ae80dcadc1802b3499f84c07a09803f2cb90b343678bdb03d225b26b" "77c65d672b375c1e07383a9a22c9f9fc1dec34c8774fe8e5b21e76dca06d3b09" "3632cf223c62cb7da121be0ed641a2243f7ec0130178722554e613c9ab3131de" "f64c9f8b4241b680b186f4620afb9c82fa2a76cf4498a7431f90db59bb1892eb" "c4465c56ee0cac519dd6ab6249c7fd5bb2c7f7f78ba2875d28a50d3c20a59473" "b85fc9f122202c71b9884c5aff428eb81b99d25d619ee6fde7f3016e08515f07" "19ba41b6dc0b5dd34e1b8628ad7ae47deb19f968fe8c31853d64ea8c4df252b8" "3b0a350918ee819dca209cec62d867678d7dac74f6195f5e3799aa206358a983" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "f04122bbc305a202967fa1838e20ff741455307c2ae80a26035fbf5d637e325f" "2bed8550c6f0a5ce635373176d5f0e079fb4fb5919005bfa743c71b5eed29d81" "0155b3b94f6d5bce0275a15bc662be4f6f9f3284f9e469ca4ab1bd67ff9b5222" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" default)))
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults)))
@@ -290,6 +294,6 @@ you should place you code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background nil :family "Andale Mono" :foundry "MONO" :slant normal :weight normal :height 106 :width normal))))
+ '(default ((t (:background nil :family "Andale Mono" :foundry "MONO" :slant normal :weight normal :height 136 :width normal))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))

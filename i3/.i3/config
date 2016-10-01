@@ -94,12 +94,12 @@ bindsym $mod+a focus parent
 #
 set $w1 "1: "
 set $w2 "2: "
-set $w3 "3: "
+set $w3 "3: "
 set $w4 "4: "
 set $w5 "5: "
-set $w6 "6: "
-set $w7 "7: "
-set $w8 "8: "
+set $w6 "6: "
+set $w7 "7: "
+set $w8 "8: " 
 set $w9 "9: "
 set $w10 "10: "
 
@@ -183,7 +183,7 @@ assign [class="Valentina Studio"] $w9
 gaps inner 16
 gaps outer 8
 
-set $bg-color #424242
+set $bg-color #2f343f
 set $active-text-color #212121
 set $active-bg-color #ffffff
 set $inactive-bg-color #001a33
@@ -201,16 +201,18 @@ bar {
         status_command i3blocks
         font pango: Andale Mono 12
         colors {
-            background $inactive-bg-color
+            background $bg-color
             focused_workspace $active-bg-color $active-bg-color $active-text-color
             inactive_workspace $inactive-bg-color $inactive-bg-color:w $inactive-text-color
+            separator #757575
         }
         # tray_output no
         position bottom
 }
 
 # Switching to rofi instead of dmenu
-bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
+# bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
+bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 450 -opacity "75" -bw 0 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Source Code Pro 18"
 
 # Starting apps
 exec --no-startup-id redshift ||  redshift -l 41.90:-87.64
@@ -226,7 +228,7 @@ exec --no-startup-id ./.triple.sh
 
 # Compton and wallpaper
 exec --no-startup-id compton -b
-exec --no-startup-id feh --bg-fill .wallpaper.png
+exec --no-startup-id feh --bg-fill .wallpaper.jpg
 
 # Keyboard layout
 exec --no-startup-id setxkbmp us altgr-intl
