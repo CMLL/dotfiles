@@ -39,7 +39,12 @@ values."
      rust
      javascript
      html
+     games
+     erc
      python
+     xkcd
+     emoji
+     prodigy
      ivy
      auto-completion
      better-defaults
@@ -134,13 +139,14 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(niflheim
-                         ample
+   dotspacemacs-themes '(ample
+                         planet
+                         spacemacs-dark
+                         niflheim
                          jbeans
                          grandshell
                          ample-zen
                          material
-                         spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -283,7 +289,7 @@ values."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '(ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
