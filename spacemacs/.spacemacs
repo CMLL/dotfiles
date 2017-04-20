@@ -31,47 +31,45 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     sql
+     yaml
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     go
      rust
      javascript
      html
-     games
-     erc
      python
-     xkcd
-     emoji
-     prodigy
      ivy
      auto-completion
      better-defaults
      emacs-lisp
      git
-     cscope
      markdown
      org
+     prodigy
+     syntax-checking
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
             shell-default-term-shell "/usr/bin/zsh")
-     spell-checking
-     syntax-checking
-     version-control
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-global-margin t)
      themes-megapack
-     ranger
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(company-jedi)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(company-anaconda)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -139,24 +137,16 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(ample
-                         planet
-                         spacemacs-dark
-                         niflheim
-                         jbeans
-                         grandshell
-                         ample-zen
-                         material
-                         spacemacs-light)
+   dotspacemacs-themes '(material)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Noto Mono"
-                               :size 16
+   dotspacemacs-default-font '("Hack"
+                               :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.5)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -208,7 +198,11 @@ values."
    ;; (default 'cache)
    dotspacemacs-auto-save-file-location 'cache
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
-   dotspacemacs-max-rollback-slots 5
+   dotspacemacs-max-rollback-slots 
+
+
+
+5
    ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
    ;; if non nil, the helm header is hidden when there is only one source.
@@ -264,11 +258,11 @@ values."
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
-   dotspacemacs-smooth-scrolling t
+   dotspacemacs-smooth-scrolling nil
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -327,14 +321,20 @@ you should place your code here."
   ;;      (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
   ;;      (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)))
 
+  ;; Buffer
+  (define-key global-map (kbd "M-b") 'ivy-switch-buffer)
+
   ;; pytest module keybind
   (define-key global-map (kbd "M-p") 'pytest-module)
 
   ;; Replace find tag
   (define-key global-map (kbd "M-t") 'find-tag)
 
-  (remove-hook 'python-mode-hook 'anaconda-eldoc-mode)
-  (remove-hook 'python-mode-hook 'smartparens-mode)
+  ;; Company
+  (global-company-mode)
+  (add-to-list 'company-backends 'company-jedi)
+  (add-to-list 'company-backends-python-mode 'company-jedi)
+  (global-set-key "\t" 'company-complete-common)
 
   ;; Disable smartparens
   (eval-after-load 'smartparens
@@ -344,29 +344,134 @@ you should place your code here."
        (sp-pair "'" nil :actions nil)
        (sp-pair "\"" nil :actions nil)))
 
-  ;; Electric pair
-  (electric-pair-mode 1)
+  ;; Ivy configuration
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
 
-  ;; Linum
-  (add-hook 'python-mode-hook 'linum-relative-mode)
-  (add-hook 'web-mode-hook 'linum-relative-mode)
-  (add-hook 'javascript-mode 'linum-relative-mode)
+  (define-key prodigy-mode-map (kbd "T") 'prodigy-display-process)
 
-  ;; Cscope
-  (add-hook 'python-mode-hook 'cscope-minor-mode)
-  (add-hook 'web-mode-hook 'cscope-minor-mode)
-  (add-hook 'javascript-mode 'cscope-minor-mode)
-  ;; (add-hook 'python-mode-hook 'helm-cscope-mode)
-  ;; (add-hook 'web-mode-hook 'helm-cscope-mode)
-  ;; (add-hook 'javascript-mode 'helm-cscope-mode)
+  (setq pythonpath '(("PYTHONPATH" "/home/cllamach/Panopta/classic/src/")))
 
-  ;; Whitespace mode
-  (add-hook 'python-mode-hook, 'whitespace-mode)
-  (add-hook 'web-mode-hook 'whitespace-mode)
-  (add-hook 'javascript-mode 'whitespace-mode)
+  ;; Prodigy Services Configuration
+  (prodigy-define-service
+    :name "Controlpanel"
+    :command "python"
+    :args '("start-ControlPanel.py" "controlpanel.cfg")
+    :cwd "/home/cllamach/Panopta/classic/src/controlpanel"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "controlpanel"))
+    )
 
-  ;; Swith dired for deer
-  (add-hook 'dired-mode-hook 'deer-mode)
+  (prodigy-define-service
+   :name "WidgetEngine"
+   :command "python"
+   :args '("WidgetEngine.py" "-c" "widgets_engine.cfg")
+   :cwd "/home/cllamach/Panopta/classic/src/dashboards_v2/widgets_handler"
+   :stop-signal 'sigkill
+   :env pythonpath
+   :init (lambda () (pyvenv-workon "widget_engine"))
+   )
+
+  (prodigy-define-service
+    :name "DisplayEngine"
+    :command "python"
+    :args '("DisplayEngine.py" "-c" "display_engine.cfg")
+    :cwd "/home/cllamach/Panopta/classic/src/dashboards_v2/dashboard_piper"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "display_engine"))
+    )
+
+  (prodigy-define-service
+    :name "ResultHarvester"
+    :command "python"
+    :args '("ResultHarvester.py" "-c" "harvester.conf")
+    :cwd "/home/cllamach/Panopta/classic/src/resultharvester"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "controlpanel"))
+    )
+
+  (prodigy-define-service
+    :name "Checker"
+    :command "python"
+    :args '("Checker.py" "-c" "checker.conf")
+    :cwd "/home/cllamach/Panopta/classic/src/checker"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "checker279"))
+    )
+  (prodigy-define-service
+    :name "Checker1"
+    :command "python"
+    :args '("Checker.py" "-c" "checker_1.conf")
+    :cwd "/home/cllamach/Panopta/classic/src/checker"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "checker279"))
+    )
+  (prodigy-define-service
+    :name "Checker2"
+    :command "python"
+    :args '("Checker.py" "-c" "checker_2.conf")
+    :cwd "/home/cllamach/Panopta/classic/src/checker"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "checker279"))
+    )
+  (prodigy-define-service
+    :name "Checker3"
+    :command "python"
+    :args '("Checker.py" "-c" "checker_3.conf")
+    :cwd "/home/cllamach/Panopta/classic/src/checker"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "checker279"))
+    )
+
+  (prodigy-define-service
+    :name "NotifyEngine"
+    :command "python"
+    :args '("NotifyEngine.py" "-c" "notifyengine2.conf")
+    :cwd "/home/cllamach/Panopta/classic/src/notifyengine2"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "notify-env")))
+
+  (prodigy-define-service
+    :name "Aggregator"
+    :command "python"
+    :args '("aggregator.py" "-c" "aggregator_config.py")
+    :cwd "/home/cllamach/Panopta/classic/src/aggregator"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "aggregator-env")))
+
+  (prodigy-define-service
+    :name "JS Compile Watcher"
+    :command "watchify"
+    :args '("-vde" "src/assets/scripts/main.js" "-o" "/home/cllamach/Panopta/classic/src/controlpanel/ControlPanel/static/assets/newux/scripts/app.js")
+    :cwd "/home/cllamach/Panopta/classic/src/controlpanel/ControlPanel/static/ui-components"
+    :stop-signal 'sigkill)
+
+  (prodigy-define-service
+    :name "Python Dev Agent"
+    :command "python"
+    :args '("run_agent.py")
+    :cwd "/home/cllamach/Panopta/agent/src/linux"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "agent")))
+
+  (prodigy-define-service
+    :name "Status Pages"
+    :command "python"
+    :args '("application.py")
+    :cwd "/home/cllamach/Panopta/classic/src/reports"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "aggregator-env")))
 
   )
 
@@ -383,10 +488,11 @@ you should place your code here."
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("2bed8550c6f0a5ce635373176d5f0e079fb4fb5919005bfa743c71b5eed29d81" "8453c6ba2504874309bdfcda0a69236814cefb860a528eb978b5489422cb1791" "e0d42a58c84161a0744ceab595370cbe290949968ab62273aed6212df0ea94b4" "5436e5df71047d1fdd1079afa8341a442b1e26dd68b35b7d3c5ef8bd222057d1" "7356632cebc6a11a87bc5fcffaa49bae528026a78637acd03cae57c091afd9b9" "0c387e27a3dd040b33c6711ff92e13bd952369a788eee97e4e4ea2335ac5528f" "3a5f04a517096b08b08ef39db6d12bd55c04ed3d43b344cf8bd855bde6d3a1ae" "04dd0236a367865e591927a3810f178e8d33c372ad5bfef48b5ce90d4b476481" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "b9293d120377ede424a1af1e564ba69aafa85e0e9fd19cf89b4e15f8ee42a8bb" "604648621aebec024d47c352b8e3411e63bdb384367c3dd2e8db39df81b475f5" "8abee8a14e028101f90a2d314f1b03bed1cde7fd3f1eb945ada6ffc15b1d7d65" "cedd3b4295ac0a41ef48376e16b4745c25fa8e7b4f706173083f16d5792bb379" "b85fc9f122202c71b9884c5aff428eb81b99d25d619ee6fde7f3016e08515f07" "b34636117b62837b3c0c149260dfebe12c5dad3d1177a758bb41c4b15259ed7e" "ba9be9caf9aa91eb34cf11ad9e8c61e54db68d2d474f99a52ba7e87097fa27f5" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0820d191ae80dcadc1802b3499f84c07a09803f2cb90b343678bdb03d225b26b" "45712b65018922c9173439d9b1b193cb406f725f14d02c8c33e0d2cdad844613" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "77bd459212c0176bdf63c1904c4ba20fce015f730f0343776a1a14432de80990" "71182be392aa922f3c05e70087a40805ef2d969b4f8f965dfc0fc3c2f5df6168" "38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "1db337246ebc9c083be0d728f8d20913a0f46edc0a00277746ba411c149d7fe5" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "28ec8ccf6190f6a73812df9bc91df54ce1d6132f18b4c8fcc85d45298569eb53" "2bed8550c6f0a5ce635373176d5f0e079fb4fb5919005bfa743c71b5eed29d81" "8453c6ba2504874309bdfcda0a69236814cefb860a528eb978b5489422cb1791" "e0d42a58c84161a0744ceab595370cbe290949968ab62273aed6212df0ea94b4" "5436e5df71047d1fdd1079afa8341a442b1e26dd68b35b7d3c5ef8bd222057d1" "7356632cebc6a11a87bc5fcffaa49bae528026a78637acd03cae57c091afd9b9" "0c387e27a3dd040b33c6711ff92e13bd952369a788eee97e4e4ea2335ac5528f" "3a5f04a517096b08b08ef39db6d12bd55c04ed3d43b344cf8bd855bde6d3a1ae" "04dd0236a367865e591927a3810f178e8d33c372ad5bfef48b5ce90d4b476481" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "b9293d120377ede424a1af1e564ba69aafa85e0e9fd19cf89b4e15f8ee42a8bb" "604648621aebec024d47c352b8e3411e63bdb384367c3dd2e8db39df81b475f5" "8abee8a14e028101f90a2d314f1b03bed1cde7fd3f1eb945ada6ffc15b1d7d65" "cedd3b4295ac0a41ef48376e16b4745c25fa8e7b4f706173083f16d5792bb379" "b85fc9f122202c71b9884c5aff428eb81b99d25d619ee6fde7f3016e08515f07" "b34636117b62837b3c0c149260dfebe12c5dad3d1177a758bb41c4b15259ed7e" "ba9be9caf9aa91eb34cf11ad9e8c61e54db68d2d474f99a52ba7e87097fa27f5" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0820d191ae80dcadc1802b3499f84c07a09803f2cb90b343678bdb03d225b26b" "45712b65018922c9173439d9b1b193cb406f725f14d02c8c33e0d2cdad844613" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "77bd459212c0176bdf63c1904c4ba20fce015f730f0343776a1a14432de80990" "71182be392aa922f3c05e70087a40805ef2d969b4f8f965dfc0fc3c2f5df6168" "38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" "a0feb1322de9e26a4d209d1cfa236deaf64662bb604fa513cca6a057ddf0ef64" "1db337246ebc9c083be0d728f8d20913a0f46edc0a00277746ba411c149d7fe5" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#37474f")
+ '(fci-rule-color "#37474f" t)
  '(hl-sexp-background-color "#1c1f26")
+ '(menu-bar-mode nil)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map

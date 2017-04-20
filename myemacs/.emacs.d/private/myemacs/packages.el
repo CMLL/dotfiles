@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(defconst myemacs-packages '(elpy ));;flycheck))
+(defconst myemacs-packages '(xcscope))
   "The list of Lisp packages required by the myemacs layer.
 
 Each entry is either:
@@ -56,11 +56,15 @@ Each entry is either:
       - A list beginning with the symbol `recipe' is a melpa
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
 
-(defun myemacs/init-elpy ()
-  (use-package elpy
-    :init
-    (elpy-enable))
- )
+(defun myemacs/init-xscope ()
+  (use-packege xscope
+               :init
+               (require-cscope)))
+;; (defun myemacs/init-elpy ()
+;;   (use-package elpy
+;;     :init
+;;     (elpy-enable))
+;;  )
 
 ;;(defun myemacs/init-flycheck ()
 ;;  (use-package flycheck
