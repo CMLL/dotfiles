@@ -42,9 +42,10 @@ values."
      rust
      javascript
      html
-     python
      ivy
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup nil)
+     python
      better-defaults
      emacs-lisp
      git
@@ -52,6 +53,7 @@ values."
      org
      prodigy
      syntax-checking
+     ranger
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
@@ -65,11 +67,11 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(company-jedi)
+   dotspacemacs-additional-packages '(ripgrep projectile-ripgrep)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(company-anaconda)
+   dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -129,6 +131,7 @@ values."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
+                                (todos . 5)
                                 (projects . 7))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
@@ -137,7 +140,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(material)
+   dotspacemacs-themes '(brin)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -254,7 +257,7 @@ values."
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
@@ -262,10 +265,10 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers 'relative
+   dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -326,27 +329,21 @@ you should place your code here."
 
   ;; pytest module keybind
   (define-key global-map (kbd "M-p") 'pytest-module)
-
-  ;; Replace find tag
-  (define-key global-map (kbd "M-t") 'find-tag)
-
-  ;; Company
-  (global-company-mode)
-  (add-to-list 'company-backends 'company-jedi)
-  (add-to-list 'company-backends-python-mode 'company-jedi)
-  (global-set-key "\t" 'company-complete-common)
-
-  ;; Disable smartparens
-  (eval-after-load 'smartparens
-    '(progn
-       (sp-pair "(" nil :actions nil)
-       (sp-pair "[" nil :actions nil)
-       (sp-pair "'" nil :actions nil)
-       (sp-pair "\"" nil :actions nil)))
+  (define-key global-map (kbd "M-P") 'pytest-directory)
 
   ;; Ivy configuration
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
+
+  ;; Company global
+  (global-company-mode t)
+  (global-set-key "\t" 'company-complete-common)
+  (setq company-backends-python-mode ())
+  (add-to-list 'company-backends-python-mode '(company-anaconda))
+  ;; (setq company-idle-delay nil)
+
+  ;; Jedi completion
+  ;; (add-to-list 'company-backends-python-mode 'company-jedi)
 
   (define-key prodigy-mode-map (kbd "T") 'prodigy-display-process)
 
@@ -357,6 +354,16 @@ you should place your code here."
     :name "Controlpanel"
     :command "python"
     :args '("start-ControlPanel.py" "controlpanel.cfg")
+    :cwd "/home/cllamach/Panopta/classic/src/controlpanel"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "controlpanel"))
+    )
+
+  (prodigy-define-service
+    :name "CP uWSGI"
+    :command "uwsgi"
+    :args '("--http-socket" ":8000" "-w" "cpwsgi" "--buffer-size" "65535")
     :cwd "/home/cllamach/Panopta/classic/src/controlpanel"
     :stop-signal 'sigkill
     :env pythonpath
@@ -516,3 +523,9 @@ you should place your code here."
      (340 . "#fff59d")
      (360 . "#8bc34a"))))
  '(vc-annotate-very-old-color nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip ((t (:background "white" :foreground "RoyalBlue4")))))

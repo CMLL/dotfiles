@@ -27,7 +27,7 @@ font pango:Inconsolata 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -85,6 +85,8 @@ bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
+
+workspace_layout tabbed
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -153,15 +155,15 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Down resize shrink height 10 px or 10 ppt
+        bindsym Up resize grow height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
         # back to normal: Enter or Escape
@@ -191,8 +193,8 @@ assign [class="Valentina Studio"] $w9
 
 # Gaps
 #
-#gaps inner 0
-#gaps outer 0
+# gaps inner 1
+# gaps outer 2
 
 set $bg-color #2f343f
 set $active-text-color #212121
@@ -210,7 +212,7 @@ for_window [class="^.*"] border pixel 1
 bar {
         status_command i3blocks -c /home/cllamach/.i3blocks.conf
         strip_workspace_numbers yes
-        font pango: Oxygen Mono 10
+        font pango: Hack 10.5
         colors {
             background $bg-color
             focused_workspace $active-bg-color $active-bg-color $active-text-color
@@ -235,10 +237,15 @@ exec --no-startup-id ./.triple.sh
 
 # Compton and wallpaper
 # exec --no-startup-id compton -b
-exec_always --no-startup-id feh --bg-fill .wallpaper.png
+exec_always --no-startup-id feh --bg-scale .wallpaper.jpg
 
 # Keyboard layout
 exec --no-startup-id setxkbmp -layout us -variant altgr-intl -option nodeadkeys
+
+# XFCE Settings
+exec --no-startup-id xfsettingsd --sm-client-disable &
+
+exec --no-startup-id nm-applet
 
 # Polybar
 # exec_always --no-startup-id killall polybar; polybar main
