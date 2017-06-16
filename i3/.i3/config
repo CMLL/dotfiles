@@ -230,7 +230,7 @@ bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 75 -bc "$active-bg-colo
 exec --no-startup-id redshift ||  redshift -l 41.90:-87.64
 
 # Caps to backspace
-exec --no-startup-id setxkbmap -option caps:backspace
+exec --no-startup-id setxkbmap -option ctrl:nocaps
 
 # Screen layout
 exec --no-startup-id ./.triple.sh
