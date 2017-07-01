@@ -247,6 +247,9 @@ exec --no-startup-id xfsettingsd --sm-client-disable &
 
 exec --no-startup-id nm-applet
 
+# Rescue Time
+exec --no-startup-id rescuetime
+
 # Polybar
 # exec_always --no-startup-id killall polybar; polybar main
 

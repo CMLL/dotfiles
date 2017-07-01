@@ -26,67 +26,85 @@
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
+;; Bootstrap use package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 ;; Install my packages
 (ensure-package-installed
  'magit
- 'evil
  'projectile
  'railscasts-theme
- 'evil-magit
  'flycheck
  'ivy
  'swiper
  'counsel
  'ace-window
  'counsel-projectile
- 'vlf
  'ranger
  'web-mode
  'pyvenv
- 'elpy
+ ;; 'elpy
  'package-safe-delete
  'prodigy
+ 'logview
+ 'company
+ 'evil
+ 'evil-magit
+ 'evil-nerd-commenter
+ 'org-evil
+ 'evil-matchit
+ 'evil-leader
+ 'vlf
+ 'pytest
+ 'spaceline
+ 'ripgrep
  )
 (package-initialize)
 
-;; Load Evil-Mode by default
+;; Evil Leader
+(global-evil-leader-mode)
+
+;; Evil mode
 (require 'evil)
-(evil-mode t)
+(evil-mode 1)
 
-;; Load evil-magit
-(evil-magit-init)
+;; Evil Magit
+(use-package evil-magit)
 
-;; Elpy
-(package-initialize)
-(elpy-enable)
-(remove-hook 'elpy-modules 'elpy-module-flymake)
+;; ;; ;; Elpy
+;; (use-package elpy
+;;   :ensure t
+;;   :config
+;;   (elpy-enable)
+;;   (remove-hook 'elpy-modules 'elpy-module-flymake)
+;;   (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
+;;   )
 
-;; Ace window
-(global-set-key (kbd "M-j") 'split-window-vertically)
-(global-set-key (kbd "M-h") 'split-window-horizontally)
-(global-set-key (kbd "M-w") 'ace-window)
+;; Electric Pair
+(electric-pair-mode)
 
 ;; Vlf
-(require 'vlf-setup)
+(use-package vlf)
 
 ;; Ivy configuration
 (ivy-mode t)
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
 
-;; Search Expr
-(global-set-key (kbd "M-i") 'ripgrep-regexp)
-
-
 ;; Company-mode
-(add-hook 'after-init-hook 'global-company-mode)
-(global-set-key (kbd "<M-tab>") 'company-complete)
+(use-package company
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (global-set-key (kbd "C-.") 'company-complete)
+  )
 
 ;; Load projectile globally
-(projectile-mode)
-
-;; Load auto bracket
-(electric-pair-mode)
+(use-package projectile
+  :ensure t
+  :config
+  (setq projectile-completion-system 'ivy))
 
 ;; Display line numbers
 (global-linum-mode 0)
@@ -99,11 +117,9 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
 
 ;; Web Mode
-(add-hook 'html-mode-hook 'web-mode)
-
-;; Full ack
-(autoload 'ack-same "full-ack" nil t)
-(autoload 'ack "full-ack" nil t)
+(use-package web-mode
+  :config
+  (add-hook 'html-mode-hook 'web-mode))
 
 ;; Ibuffer
 (autoload 'ibuffer "ibuffer" "List buffers." t)
@@ -111,32 +127,66 @@
 ;; Flycheck
 (global-flycheck-mode)
 
+;; Ripgrep
+(use-package ripgrep)
+
+;; Evil Commenter
+(evilnc-default-hotkeys)
+
+;; Org Evil
+(use-package org-evil)
+
+;; Spaceline
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+
+;; Pytest
+(use-package pytest)
+(setq pytest-cmd-flags "")
+
 ;;====================================================
 ;; Define only keybinds remaps from this point onwards.
 ;;====================================================
+
+;; Evil Leader
+(evil-leader/set-key
+  "f" 'counsel-projectile
+  "b" 'ivy-switch-buffer
+  "p" 'projectile-switch-project
+  "w" 'ace-window
+  "g" 'magit-status
+  "e" 'ranger
+  "i" 'ripgrep-regexp
+  "s" 'prodigy
+  "ci" 'evilnc-comment-or-uncomment-lines
+  "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
+  "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
+  "cc" 'evilnc-copy-and-comment-lines
+  "cp" 'evilnc-comment-or-uncomment-paragraphs
+  "cr" 'comment-or-uncomment-region
+  "cv" 'evilnc-toggle-invert-comment-line-by-line
+  "."  'evilnc-copy-and-comment-operator
+  "t" 'pytest-module
+  "T" 'pytest-directory
+  )
+
+;; Ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Ivy keybinds
 (global-set-key (kbd "\C-s") 'swiper)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "M-b") 'ivy-switch-buffer)
-(global-set-key (kbd "M-p") 'counsel-projectile)
-(global-set-key (kbd "M-f") 'counsel-find-file)
+(global-set-key (kbd "M-f") 'counsel-projectile)
+(global-set-key (kbd "M-p") 'projectile-switch-project)
 
-;; Better window navigation
-(eval-after-load "evil"
-  '(progn
-     (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-     (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-     (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-     (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-     ))
+;; Ace window
+(global-set-key (kbd "M-j") 'split-window-vertically)
+(global-set-key (kbd "M-h") 'split-window-horizontally)
+(global-set-key (kbd "M-w") 'ace-window)
 
-;; esc quits
-(define-key evil-normal-state-map [escape] 'keyboard-quit)
-(define-key evil-visual-state-map [escape] 'keyboard-quit)
-
-;; Elpy Keybinds
-(global-set-key (kbd "M-d") 'elpy-goto-definition-other-window)
+;; ;; ;; Elpy Keybinds
+;; (global-set-key (kbd "M-d") 'elpy-goto-definition-other-window)
 
 ;; Remap virtualenv loading
 (define-key global-map (kbd "M-v") 'pyvenv-workon)
@@ -147,14 +197,25 @@
 ;; Change projectile dired access
 (global-set-key (kbd "M-e") 'projectile-dired)
 
-;; Ranger
-(global-set-key (kbd "M-r") 'ranger)
+;; Search Expr
+(global-set-key (kbd "M-i") 'ripgrep-regexp)
 
-;; Prodigy
-(global-set-key (kbd "M-s") 'prodigy)
+;; Prodigy Keybinds
+(define-key evil-normal-state-map (kbd "M-s") 'prodigy)
+(add-to-list 'evil-emacs-state-modes 'prodigy-mode)
+
+;; Evil Commnenter
+(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+(global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
+(global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
+(global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+
+;; PyTest
+(define-key evil-normal-state-map (kbd "M-t") 'pytest-module)
+(define-key evil-normal-state-map (kbd "M-T") 'pytest-directory)
 
 ;;====================================================
-;; Define only prodigy service from this point onwards.
+;; define only prodigy service from this point onwards.
 ;;====================================================
 
 (setq pythonpath '(("PYTHONPATH" "/home/cllamach/Panopta/classic/src/")))
@@ -290,18 +351,38 @@
   :env pythonpath
   :init (lambda () (pyvenv-workon "aggregator-env")))
 
+(prodigy-define-service
+  :name "Sync engine"
+  :command "python"
+  :args '("SyncEngine.py" "-c" "sync.cfg")
+  :cwd "/home/cllamach/Panopta/appliance/src/sync/"
+  :stop-signal 'sigkill
+  :env pythonpath
+  :init (lambda () (pyvenv-workon "appliance")))
+
+(prodigy-define-service
+  :name "Discovert Engine"
+  :command "python"
+  :args '("DiscoveryEngine.py" "-c" "discovery.cfg")
+  :cwd "/home/cllamach/Panopta/appliance/src/discovery/"
+  :stop-signal 'sigkill
+  :env pythonpath
+  :init (lambda () (pyvenv-workon "appliance")))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(display-time-mode t)
+ '(electric-pair-mode t)
  '(line-number-mode nil)
  '(package-selected-packages
    (quote
-    (prodigy package-safe-delete elpy pyvenv web-mode ranger vlf counsel-projectile ace-window counsel swiper ivy flycheck evil-magit railscasts-theme projectile evil magit)))
+    (company-jedi vue-mode evil-leader pytest org-evil evil-matchit spaceline evil-nerd-commenter vlf ripgrep use-package logview prodigy package-safe-delete pyvenv web-mode ranger counsel-projectile ace-window counsel swiper ivy flycheck evil-magit railscasts-theme projectile evil magit)))
  '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(which-function-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
