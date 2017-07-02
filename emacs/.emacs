@@ -36,6 +36,7 @@
  'magit
  'projectile
  'railscasts-theme
+ 'doom-themes
  'flycheck
  'ivy
  'swiper
@@ -109,9 +110,13 @@
 ;; Display line numbers
 (global-linum-mode 0)
 (line-number-mode 0)
+(which-function-mode '())
+
+;; Scrollbar
+(scroll-bar-mode 0)
 
 ;; Color theme
-(load-theme 'railscasts t)
+(load-theme 'doom-one t)
 
 ;; Autoload js mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
@@ -142,7 +147,7 @@
 
 ;; Pytest
 (use-package pytest)
-(setq pytest-cmd-flags "")
+(setq pytest-cmd-flags "-vv")
 
 ;;====================================================
 ;; Define only keybinds remaps from this point onwards.
@@ -374,6 +379,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("0eef522d30756a80b28333f05c7eed5721f2ba9b3eaaff244ea4c6f6a1b8ac62" "5310b88333fc64c0cb34a27f42fa55ce371438a55f02ac7a4b93519d148bd03d" default)))
  '(display-time-mode t)
  '(electric-pair-mode t)
  '(line-number-mode nil)
@@ -382,7 +390,6 @@
     (company-jedi vue-mode evil-leader pytest org-evil evil-matchit spaceline evil-nerd-commenter vlf ripgrep use-package logview prodigy package-safe-delete pyvenv web-mode ranger counsel-projectile ace-window counsel swiper ivy flycheck evil-magit railscasts-theme projectile evil magit)))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
- '(which-function-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
