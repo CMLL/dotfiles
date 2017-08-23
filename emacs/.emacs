@@ -35,7 +35,6 @@
 (ensure-package-installed
  'magit
  'projectile
- 'railscasts-theme
  'flycheck
  'ivy
  'swiper
@@ -60,8 +59,16 @@
  'pytest
  'spaceline
  'ripgrep
+ 'doom-themes
+ 'php-mode
  )
 (package-initialize)
+
+;; Tool bar
+(tool-bar-mode -1)
+
+;; Scroll bar
+(scroll-bar-mode -1)
 
 ;; Evil Leader
 (global-evil-leader-mode)
@@ -88,6 +95,9 @@
 ;; Vlf
 (use-package vlf)
 
+;; Yasnippet
+(yas-global-mode)
+
 ;; Ivy configuration
 (ivy-mode t)
 (setq ivy-use-virtual-buffers t)
@@ -101,10 +111,8 @@
   )
 
 ;; Load projectile globally
-(use-package projectile
-  :ensure t
-  :config
-  (setq projectile-completion-system 'ivy))
+(projectile-mode)
+(setq projectile-completion-system 'ivy)
 
 ;; Display line numbers
 (global-linum-mode 0)
@@ -117,9 +125,12 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
 
 ;; Web Mode
-(use-package web-mode
-  :config
-  (add-hook 'html-mode-hook 'web-mode))
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html$". web-mode))
+(setq web-mode-enable-auto-closing t)
+(setq web-mode-enable-auto-pairing t)
+(setq web-mode-enable-auto-indentation t)
+(setq web-mode-enable-auto-expanding t)
 
 ;; Ibuffer
 (autoload 'ibuffer "ibuffer" "List buffers." t)
@@ -137,12 +148,20 @@
 (use-package org-evil)
 
 ;; Spaceline
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
+;; (require 'spaceline-config)
+;; (spaceline-spacemacs-theme)
 
 ;; Pytest
 (use-package pytest)
 (setq pytest-cmd-flags "")
+
+;; Php Mode
+(autoload 'php-mode "php-mode" "Major mode for editing PHP code." t)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
+
+;; Vue
+(add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
 
 ;;====================================================
 ;; Define only keybinds remaps from this point onwards.
@@ -154,6 +173,7 @@
   "b" 'ivy-switch-buffer
   "p" 'projectile-switch-project
   "w" 'ace-window
+  "x" 'ace-delete-window
   "g" 'magit-status
   "e" 'ranger
   "i" 'ripgrep-regexp
@@ -213,6 +233,16 @@
 ;; PyTest
 (define-key evil-normal-state-map (kbd "M-t") 'pytest-module)
 (define-key evil-normal-state-map (kbd "M-T") 'pytest-directory)
+
+;; Ctags
+(setq path-to-ctags "/usr/bin/ctags-exuberant")
+(defun create-tags (dir-name)
+  "Create tags file"
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "%s -f TAGS -e --force-language=Python -R %s" path-to-ctags (directory-file-name dir-name)))
+  )
+
 
 ;;====================================================
 ;; define only prodigy service from this point onwards.
@@ -379,13 +409,11 @@
  '(line-number-mode nil)
  '(package-selected-packages
    (quote
-    (company-jedi vue-mode evil-leader pytest org-evil evil-matchit spaceline evil-nerd-commenter vlf ripgrep use-package logview prodigy package-safe-delete pyvenv web-mode ranger counsel-projectile ace-window counsel swiper ivy flycheck evil-magit railscasts-theme projectile evil magit)))
+    (doom-themes company-jedi vue-mode evil-leader pytest org-evil evil-matchit spaceline evil-nerd-commenter vlf ripgrep use-package logview prodigy package-safe-delete pyvenv web-mode ranger counsel-projectile ace-window counsel swiper ivy flycheck evil-magit projectile evil magit)))
  '(show-paren-mode t)
- '(tool-bar-mode nil)
- '(which-function-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
+
  ;; If there is more than one, they won't work right.
  )
