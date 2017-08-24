@@ -63,6 +63,10 @@
  'ripgrep
  'doom-themes
  'php-mode
+ 'go-mode
+ 'company-go
+ 'gotest
+ 'gorepl-mode
  )
 (package-initialize)
 
@@ -169,6 +173,13 @@
 ;; Vue
 (add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
 
+;; Go flycheck
+(add-to-list 'load-path "~/go/src/github.com/dougm/goflymake")
+(require 'go-flycheck)
+
+;; Shell variables in emacs
+(exec-path-from-shell-initialize)
+
 ;;====================================================
 ;; Define only keybinds remaps from this point onwards.
 ;;====================================================
@@ -192,8 +203,6 @@
   "cr" 'comment-or-uncomment-region
   "cv" 'evilnc-toggle-invert-comment-line-by-line
   "."  'evilnc-copy-and-comment-operator
-  "t" 'pytest-module
-  "T" 'pytest-directory
   )
 
 ;; Ibuffer
@@ -237,8 +246,22 @@
 (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
 
 ;; PyTest
-(define-key evil-normal-state-map (kbd "M-t") 'pytest-module)
-(define-key evil-normal-state-map (kbd "M-T") 'pytest-directory)
+(define-key python-mode-map (kbd "M-t") 'pytest-module)
+(define-key python-mode-map (kbd "M-T") 'pytest-directory)
+
+;; Go test
+(define-key go-mode-map (kbd "M-t") 'go-test-current-file)
+(define-key go-mode-map (kbd "M-T") 'go-test-current-project)
+
+;; Ctags
+(setq path-to-ctags "/usr/bin/ctags-exuberant")
+(defun create-tags (dir-name)
+  "Create tags file"
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "%s -f TAGS -e --force-language=Python -R %s" path-to-ctags (directory-file-name dir-name)))
+  )
+
 
 ;; Ctags
 (setq path-to-ctags "/usr/bin/ctags-exuberant")
