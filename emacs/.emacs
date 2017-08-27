@@ -113,6 +113,7 @@
 (use-package company
   :config
   (add-hook 'after-init-hook 'global-company-mode)
+  (require 'company-go)
   (global-set-key (kbd "C-.") 'company-complete)
   )
 
@@ -179,6 +180,7 @@
 
 ;; Shell variables in emacs
 (exec-path-from-shell-initialize)
+
 
 ;;====================================================
 ;; Define only keybinds remaps from this point onwards.
