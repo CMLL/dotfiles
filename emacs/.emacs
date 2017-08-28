@@ -67,6 +67,7 @@
  'company-go
  'gotest
  'gorepl-mode
+ 'exec-path-from-shell
  )
 (package-initialize)
 
@@ -206,6 +207,9 @@
   "cv" 'evilnc-toggle-invert-comment-line-by-line
   "."  'evilnc-copy-and-comment-operator
   )
+
+;; Reload Emacs
+(global-set-key (kbd "C-h R") 'load-file)
 
 ;; Ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
