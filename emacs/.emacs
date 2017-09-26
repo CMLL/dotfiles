@@ -33,6 +33,7 @@
 
 ;; Install my packages
 (ensure-package-installed
+ 'key-chord
  'magit
  'projectile
  'railscasts-theme
@@ -46,11 +47,9 @@
  'ranger
  'web-mode
  'pyvenv
- ;; 'elpy
  'package-safe-delete
  'prodigy
  'logview
- 'company
  'evil
  'evil-magit
  'evil-nerd-commenter
@@ -61,13 +60,18 @@
  'pytest
  'spaceline
  'ripgrep
- 'doom-themes
  'php-mode
  'go-mode
+ 'company
  'company-go
+ 'company-jedi
  'gotest
  'gorepl-mode
  'exec-path-from-shell
+ 'multi-term
+ 'doremi
+ 'doremi-cmd
+ 'yaml-mode
  )
 (package-initialize)
 
@@ -86,15 +90,6 @@
 
 ;; Evil Magit
 (use-package evil-magit)
-
-;; ;; ;; Elpy
-;; (use-package elpy
-;;   :ensure t
-;;   :config
-;;   (elpy-enable)
-;;   (remove-hook 'elpy-modules 'elpy-module-flymake)
-;;   (remove-hook 'elpy-modules 'elpy-module-highlight-indentation)
-;;   )
 
 ;; Electric Pair
 (electric-pair-mode)
@@ -115,23 +110,28 @@
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   (require 'company-go)
+  (add-to-list 'company-backends 'company-jedi)
   (global-set-key (kbd "C-.") 'company-complete)
   )
+
+;; Jedi
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; Load projectile globally
 (projectile-mode)
 (setq projectile-completion-system 'ivy)
+(setq projectile-switch-project-action #'projectile-commander)
 
 ;; Display line numbers
 (global-linum-mode 0)
 (line-number-mode 0)
-(which-function-mode '())
 
 ;; Scrollbar
 (scroll-bar-mode 0)
 
 ;; Color theme
-(load-theme 'doom-one t)
+(load-theme 'rebecca t)
 
 ;; Autoload js mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
@@ -158,10 +158,6 @@
 
 ;; Org Evil
 (use-package org-evil)
-
-;; Spaceline
-;; (require 'spaceline-config)
-;; (spaceline-spacemacs-theme)
 
 ;; Pytest
 (use-package pytest)
@@ -206,6 +202,7 @@
   "cr" 'comment-or-uncomment-region
   "cv" 'evilnc-toggle-invert-comment-line-by-line
   "."  'evilnc-copy-and-comment-operator
+  ";" 'multi-term
   )
 
 ;; Reload Emacs
@@ -213,6 +210,9 @@
 
 ;; Ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; Doremi
+(global-set-key (kbd "C-x t w") 'doremi-window-height+)
 
 ;; Ivy keybinds
 (global-set-key (kbd "\C-s") 'swiper)
@@ -226,8 +226,13 @@
 (global-set-key (kbd "M-h") 'split-window-horizontally)
 (global-set-key (kbd "M-w") 'ace-window)
 
-;; ;; ;; Elpy Keybinds
-;; (global-set-key (kbd "M-d") 'elpy-goto-definition-other-window)
+;; Windmove
+(defvar cllamach/windmove-map (make-sparse-keymap))
+(define-key cllamach/windmove-map "h" 'windmove-left)
+(define-key cllamach/windmove-map "j" 'windmove-down)
+(define-key cllamach/windmove-map "k" 'windmove-up)
+(define-key cllamach/windmove-map "l" 'windmove-right)
+(key-chord-define-global "yy" cllamach/windmove-map)
 
 ;; Remap virtualenv loading
 (define-key global-map (kbd "M-v") 'pyvenv-workon)
@@ -447,7 +452,7 @@
  '(line-number-mode nil)
  '(package-selected-packages
    (quote
-    (doom-themes company-jedi vue-mode evil-leader pytest org-evil evil-matchit spaceline evil-nerd-commenter vlf ripgrep use-package logview prodigy package-safe-delete pyvenv web-mode ranger counsel-projectile ace-window counsel swiper ivy flycheck evil-magit projectile evil magit)))
+    (doom-themes vue-mode evil-leader pytest org-evil evil-matchit spaceline evil-nerd-commenter vlf ripgrep use-package logview prodigy package-safe-delete pyvenv web-mode ranger counsel-projectile ace-window counsel swiper ivy flycheck evil-magit projectile evil magit)))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
 (custom-set-faces
