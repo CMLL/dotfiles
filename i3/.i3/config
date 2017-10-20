@@ -129,17 +129,6 @@ bindsym $mod+Shift+8 move container to workspace $w8
 bindsym $mod+Shift+9 move container to workspace $w9
 bindsym $mod+Shift+0 move container to workspace $w10
 
-# workspace $w1 output HDMI-1
-# workspace $w2 output HDMI-2
-# workspace $w4 output eDP-1
-# workspace $w3 output HDMI-2
-# workspace $w5 output HDMI-1
-# workspace $w6 output HDMI-1
-# workspace $w7 output HDMI-1
-# workspace $w8 output HDMI-2
-# workspace $w9 output HDMI-2
-# workspace $w10 output HDMI-2
-
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -223,7 +212,7 @@ bar {
 }
 
 # Switching to rofi instead of dmenu
-bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
+bindsym $mod+d exec rofi -show combi -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
 #bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 450 -opacity "75" -bw 0 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Oxygen Mono 18"
 
 # Starting apps
@@ -240,7 +229,7 @@ exec --no-startup-id ./.triple.sh
 exec_always --no-startup-id feh --bg-scale .wallpaper.jpg
 
 # XFCE Settings
-exec --no-startup-id xfsettingsd --sm-client-disable &
+# exec --no-startup-id xfsettingsd --sm-client-disable &
 
 exec --no-startup-id nm-applet
 

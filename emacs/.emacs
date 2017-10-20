@@ -102,8 +102,11 @@
 
 ;; Ivy configuration
 (ivy-mode t)
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
+(use-package ivy :demand
+  :config
+  (setq ivy-use-virtual-buffers t
+	ivy-count-format "%d/%d "
+	enable-recursive-minibuffers t))
 
 ;; Company-mode
 (use-package company
@@ -111,12 +114,14 @@
   (add-hook 'after-init-hook 'global-company-mode)
   (require 'company-go)
   (add-to-list 'company-backends 'company-jedi)
-  (global-set-key (kbd "C-.") 'company-complete)
+  (global-set-key (kbd "C-.") 'company-complete-common)
   )
 
 ;; Jedi
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
+(setq company-jedi-host "127.0.0.1")
+(setq jedi:get-in-function-call-timeout 5000)
 
 ;; Load projectile globally
 (projectile-mode)
@@ -131,7 +136,7 @@
 (scroll-bar-mode 0)
 
 ;; Color theme
-(load-theme 'rebecca t)
+(load-theme 'material t)
 
 ;; Autoload js mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
@@ -147,8 +152,10 @@
 ;; Ibuffer
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
+
 ;; Flycheck
 (global-flycheck-mode)
+(setq flycheck-check-syntax-automatically '(mode-enabled save))
 
 ;; Ripgrep
 (use-package ripgrep)
@@ -263,16 +270,6 @@
 ;; Go test
 (define-key go-mode-map (kbd "M-t") 'go-test-current-file)
 (define-key go-mode-map (kbd "M-T") 'go-test-current-project)
-
-;; Ctags
-(setq path-to-ctags "/usr/bin/ctags-exuberant")
-(defun create-tags (dir-name)
-  "Create tags file"
-  (interactive "DDirectory: ")
-  (shell-command
-   (format "%s -f TAGS -e --force-language=Python -R %s" path-to-ctags (directory-file-name dir-name)))
-  )
-
 
 ;; Ctags
 (setq path-to-ctags "/usr/bin/ctags-exuberant")
