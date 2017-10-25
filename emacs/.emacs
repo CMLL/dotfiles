@@ -64,7 +64,6 @@
  'go-mode
  'company
  'company-go
- 'company-jedi
  'gotest
  'gorepl-mode
  'exec-path-from-shell
@@ -72,6 +71,11 @@
  'doremi
  'doremi-cmd
  'yaml-mode
+ 'yasnippet
+ 'yasnippet-snippets
+ 'material-theme
+ 'anaconda-mode
+ 'company-anaconda
  )
 (package-initialize)
 
@@ -108,25 +112,28 @@
 	ivy-count-format "%d/%d "
 	enable-recursive-minibuffers t))
 
+;; Anaconda
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src")
+
 ;; Company-mode
 (use-package company
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   (require 'company-go)
-  (add-to-list 'company-backends 'company-jedi)
+  (add-to-list 'company-backends 'company-anaconda)
   (global-set-key (kbd "C-.") 'company-complete-common)
   )
-
-;; Jedi
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-(setq company-jedi-host "127.0.0.1")
-(setq jedi:get-in-function-call-timeout 5000)
 
 ;; Load projectile globally
 (projectile-mode)
 (setq projectile-completion-system 'ivy)
 (setq projectile-switch-project-action #'projectile-commander)
+
+;; Projectile Workaround fix for slow loading on large projects.
+(setq projectile-mode-line
+      '(:eval (format " Projectile[%s]"
+		      (projectile-project-name))))
 
 ;; Display line numbers
 (global-linum-mode 0)
