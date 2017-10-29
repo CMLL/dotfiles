@@ -212,7 +212,7 @@ bar {
 }
 
 # Switching to rofi instead of dmenu
-bindsym $mod+d exec rofi -show combi -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
+bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 75 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color"
 #bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 450 -opacity "75" -bw 0 -bc "$active-bg-color" -bg "$bg-color" -fg "$active-text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Oxygen Mono 18"
 
 # Starting apps
@@ -238,3 +238,8 @@ exec --no-startup-id rescuetime
 
 # Polybar
 # exec_always --no-startup-id killall polybar; polybar main
+
+# Touchpad settings
+exec --no-startup-id xinput set-prop 15 301 1
+exec --no-startup-id xinput set-prod 15 279 1
+

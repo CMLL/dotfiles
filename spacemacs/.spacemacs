@@ -31,8 +31,6 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     sql
-     yaml
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -40,6 +38,9 @@ values."
      ;; ----------------------------------------------------------------
      go
      rust
+     php
+     sql
+     yaml
      javascript
      html
      ivy
@@ -50,15 +51,17 @@ values."
      markdown
      org
      prodigy
+     python
      syntax-checking
      ranger
+     ycmd
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
             shell-default-term-shell "/usr/bin/zsh")
      (version-control :variables
                       version-control-diff-tool 'diff-hl
-                      version-control-global-margin t)
+                      version-control-global-margin t) ;
      ;; themes-megapack
      )
    ;; List of additional packages that will be installed without being
@@ -121,7 +124,7 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'random
+   dotspacemacs-startup-banner 'official
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -139,13 +142,13 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(wombat)
+   dotspacemacs-themes '(material)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Hack"
-                               :size 14
+   dotspacemacs-default-font '("Iosevka Term"
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.5)
@@ -238,7 +241,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -311,13 +314,17 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  ;; Window switching
-  ;; (eval-after-load "evil"
-  ;;   '(progn
-  ;;      (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-  ;;      (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-  ;;      (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-  ;;      (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)))
+  ;; YCMD
+  (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
+  (add-hook 'python-mode-hook 'ycmd-mode)
+  (company-ycmd-setup)
+  (add-to-list 'company-backends-python-mode '(company-ycmd))
+  ;; (setq ycmd-python-binary-path "/home/cllamach/.virtualenvs/controlpanel/bin/")
+
+  ;; Enable flycheck globally
+  (global-flycheck-mode)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save))
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
 
   ;; Disable smartparens
   (add-hook 'python-mode-hook 'turn-off-smartparens-mode)
@@ -333,23 +340,16 @@ you should place your code here."
   ;; VLF
   (require 'vlf-setup)
 
-  ;; Increase font
-  (define-key global-map (kbd "C-+") 'spacemacs/scale-font-transient-state/spacemacs/scale-up-font)
-  (define-key global-map (kbd "C--") 'spacemacs/scale-font-transient-state/spacemacs/scale-down-font)
-
   ;; Ivy configuration
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
 
   ;; Company mode
-  (global-set-key "\t" 'company-complete-common-or-cycle)
-  (setq company-idle-delay 0)
+  (global-set-key "\t" 'company-complete)
+  (setq company-idle-delay 0.5)
 
   ;; Browser
   (setq browse-url-browser-function 'browse-url-chrome)
-
-  ;; Jedi completion
-  ;; (add-to-list 'company-backends-python-mode 'company-jedi)
 
   (define-key prodigy-mode-map (kbd "T") 'prodigy-display-process)
 
@@ -494,10 +494,10 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (fuzzy company-web web-completion-data company-tern dash-functional company-statistics company-go company auto-yasnippet ac-ispell auto-complete yaml-mode xterm-color ws-butler winum which-key wgrep web-mode web-beautify vue-mode volatile-highlights vlf vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tern tagedit sql-indent spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs request ranger rainbow-delimiters racer pug-mode projectile-ripgrep prodigy popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file neotree mwim multi-term move-text markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc ivy-hydra info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-rust flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diff-hl define-word counsel-projectile column-enforce-mode coffee-mode clean-aindent-mode cargo auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link))))
+    (phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode company-anaconda flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred yapfify yaml-mode xterm-color ws-butler winum which-key wgrep web-mode web-beautify vue-mode edit-indirect ssass-mode vue-html-mode volatile-highlights vlf vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit sql-indent spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs request ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode projectile-ripgrep ripgrep prodigy popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-plus-contrib org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc ivy-hydra info+ indent-guide hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core haml-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-rust seq flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-go go-mode company column-enforce-mode coffee-mode clean-aindent-mode cargo rust-mode bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup material-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((class color) (min-colors 89)) (:foreground "#ffffff" :background "#263238")))))
