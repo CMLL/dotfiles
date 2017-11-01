@@ -72,7 +72,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(company-anaconda)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -142,7 +142,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(material)
+   dotspacemacs-themes '(spacemacs-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -315,11 +315,11 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; YCMD
-  (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
+  (setq ycmd-server-command '("python" "/Users/cllamach/ycmd/ycmd"))
+  ;; (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
   (add-hook 'python-mode-hook 'ycmd-mode)
   (company-ycmd-setup)
   (add-to-list 'company-backends-python-mode '(company-ycmd))
-  ;; (setq ycmd-python-binary-path "/home/cllamach/.virtualenvs/controlpanel/bin/")
 
   ;; Enable flycheck globally
   (global-flycheck-mode)
@@ -345,12 +345,30 @@ you should place your code here."
   (setq ivy-count-format "(%d/%d) ")
 
   ;; Company mode
-  (global-set-key "\t" 'company-complete)
-  (setq company-idle-delay 0.5)
+  (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
+  (define-key evil-normal-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
+  (setq company-dabbrev-downcase 0)
 
   ;; Browser
   (setq browse-url-browser-function 'browse-url-chrome)
 
+  (setq org-agenda-files '("~/Dropbox/Org/inbox.org"
+                           "~/Dropbox/Org/gtd.org"
+                           "~/Dropbox/Org/tickler.org"))
+
+  ;; Org Mode Configuration
+  (setq org-capture-templates '(("t" "TODO [inbox]" entry
+                                 (file+headline "~/Dropbox/Org/inbox.org" "Tasks")
+                                 "* TODO %i%?")
+                                ("T" "Tickler" entry
+                                 (file+headline "~/Dropbox/Org/tickler.org" "Tickler")
+                                 "* %i%? \n %U")))
+
+  (setq org-refile-targets '(("~/Dropbox/Org/gtd.org" :maxlevel . 3)
+                             ("~/Dropbox/Org/someday.org" :maxlevel . 1)
+                             ("~/Dropbox/Org/tickler.org" :maxlevel . 2)))
+
+  ;; Prodigy
   (define-key prodigy-mode-map (kbd "T") 'prodigy-display-process)
 
   (setq pythonpath '(("PYTHONPATH" "/home/cllamach/Panopta/classic/src/")))
@@ -492,6 +510,9 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(package-selected-packages
    (quote
     (phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode company-anaconda flycheck-ycmd company-ycmd ycmd request-deferred let-alist deferred yapfify yaml-mode xterm-color ws-butler winum which-key wgrep web-mode web-beautify vue-mode edit-indirect ssass-mode vue-html-mode volatile-highlights vlf vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit sql-indent spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs request ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode projectile-ripgrep ripgrep prodigy popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-plus-contrib org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc ivy-hydra info+ indent-guide hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core haml-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-rust seq flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-go go-mode company column-enforce-mode coffee-mode clean-aindent-mode cargo rust-mode bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup material-theme))))
