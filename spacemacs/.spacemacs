@@ -72,7 +72,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(company-anaconda)
+   dotspacemacs-excluded-packages '(company-anaconda org-projectile)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -367,6 +367,16 @@ you should place your code here."
   (setq org-refile-targets '(("~/Dropbox/Org/gtd.org" :maxlevel . 3)
                              ("~/Dropbox/Org/someday.org" :maxlevel . 1)
                              ("~/Dropbox/Org/tickler.org" :maxlevel . 2)))
+
+  (setq org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(i)" "|" "DONE(d)" "CANCELLED(c)")))
+
+  (setq org-agenda-custom-commands
+        '(("c" "Simple agenda view"
+           ((tags "PRIORITY=\"A\""
+                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                   (org-agenda-overriding-header "High-priority unfinished tasks:")))
+            (agenda "")
+            (alltodo "")))))
 
   ;; Prodigy
   (define-key prodigy-mode-map (kbd "T") 'prodigy-display-process)
