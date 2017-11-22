@@ -105,6 +105,21 @@ set $w8 "8: "
 set $w9 "9: "
 set $w10 "10: "
 
+# Monitors
+set $h1 "HDMI-1"
+set $h2 "HDMI-2"
+set $laptop "eDP-1"
+
+# Bind workspace to monitors
+workspace $w1 output $h1
+workspace $w2 output $h2
+workspace $w3 output $h2
+workspace $w4 output $laptop
+workspace $w5 output $h1
+workspace $w6 output $h1
+workspace $w7 output $h1
+workspace $w8 output $h2
+
 # switch to workspace
 bindsym $mod+1 workspace $w1
 bindsym $mod+2 workspace $w2
@@ -239,7 +254,6 @@ exec --no-startup-id rescuetime
 # Polybar
 # exec_always --no-startup-id killall polybar; polybar main
 
-# Touchpad settings
-exec --no-startup-id xinput set-prop 15 301 1
-exec --no-startup-id xinput set-prod 15 279 1
+# Dropbox
+exec --no-startup-id dropbox start
 
