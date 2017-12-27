@@ -362,8 +362,13 @@ you should place your code here."
 
   ;; YCMD
   (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
-  (setq ycmd-force-semantic-completion t)
+  (setq ycmd-force-semantic-completion nil)
+  (setq ycmd-python-binary-path "/home/cllamach/.virtualenvs/controlpanel/bin/python")
   (add-hook 'python-mode-hook 'ycmd-mode)
+  (defun company-mode-semantic-complete ()
+    (interactive)
+    (let ((ycmd-force-semantic-completion t))
+      (company-complete)))
 
   ;; Extra python paths
   (require 'anaconda-mode)
