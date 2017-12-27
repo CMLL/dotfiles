@@ -54,7 +54,7 @@ values."
      python
      syntax-checking
      ranger
-     ;; ycmd
+     ycmd
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
@@ -315,7 +315,6 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Anaconda mode
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/")
   (spacemacs/set-leader-keys-for-major-mode 'python-mode
     "hh" 'anaconda-mode-show-doc
     "ga" 'anaconda-mode-find-assignments
@@ -358,8 +357,31 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
   (setq company-dabbrev-downcase 0)
   (setq company-idle-delay 0.05)
-  (setq company-async-timeout 10)
+  (setq company-async-timeout 20)
   (setq company-async-wait 0.5)
+
+  ;; YCMD
+  (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
+  (setq ycmd-force-semantic-completion t)
+  (add-hook 'python-mode-hook 'ycmd-mode)
+
+  ;; Extra python paths
+  (require 'anaconda-mode)
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/library")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/tests")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/plugins")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/models")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/thirdparty")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/controlpanel")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/aggregator")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/metricpoller")
+  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/dashboards_v2")
+
+  ;; Company Python backends
+  (setq company-backends-python-mode '((company-ycmd company-anaconda)
+                                       (company-dabbrev-code company-keywords)
+                                       company-files company-dabbrev))
+
 
   ;; Browser
   (setq browse-url-browser-function 'browse-url-chrome)
@@ -543,6 +565,15 @@ you should place your code here."
     :stop-signal 'sigkill
     :env pythonpath
     :init (lambda () (pyvenv-workon "controlpanel")))
+
+  (prodigy-define-service
+    :name "Panopta CRM"
+    :command "python"
+    :args '("application.py" "-c" "crm_config.py")
+    :cwd "/home/cllamach/Panopta/classic/src/crm"
+    :stop-signal 'sigkill
+    :env pythonpath
+    :init (lambda () (pyvenv-workon "crm")))
   )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -555,10 +586,10 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (edit-indirect ssass-mode vue-html-mode ripgrep spinner log4e gntp mmm-mode skewer-mode simple-httpd json-snatcher json-reformat hydra parent-mode haml-mode fringe-helper git-gutter+ git-gutter seq pos-tip flx git-commit with-editor iedit anzu highlight memoize font-lock+ diminish autothemer pkg-info let-alist request deferred epl dash-functional tern go-mode company rust-mode bind-map bind-key yasnippet packed async pythonic dash s auto-complete popup company-anaconda anaconda-mode zenburn-theme which-key web-mode spaceline solarized-theme prodigy pip-requirements org-pomodoro org-download live-py-mode js2-refactor jbeans-theme hy-mode gruvbox-theme flatland-theme evil-nerd-commenter dumb-jump doom-themes counsel-projectile counsel swiper company-web cargo ace-window ace-link smartparens evil ycmd flycheck helm ivy avy markdown-mode org-plus-contrib magit magit-popup php-mode projectile f js2-mode zen-and-art-theme yapfify yaml-mode xterm-color ws-butler winum wgrep web-completion-data web-beautify vue-mode volatile-highlights vlf vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs request-deferred ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode projectile-ripgrep professional-theme powerline popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-present org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mwim mustang-theme multiple-cursors multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js-doc jazz-theme ivy-hydra ir-black-theme inkpot-theme info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-make helm-core hc-zenburn-theme gruber-darker-theme grandshell-theme goto-chg gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flycheck-ycmd flycheck-rust flycheck-pos-tip flx-ido flatui-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav drupal-mode dracula-theme django-theme diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-ycmd company-tern company-statistics company-go column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme all-the-icons alert alect-themes aggressive-indent afternoon-theme adaptive-wrap ac-ispell))))
+    (ghub edit-indirect ssass-mode vue-html-mode ripgrep spinner log4e gntp mmm-mode skewer-mode simple-httpd json-snatcher json-reformat hydra parent-mode haml-mode fringe-helper git-gutter+ git-gutter seq pos-tip flx git-commit with-editor iedit anzu highlight memoize font-lock+ diminish autothemer pkg-info let-alist request deferred epl dash-functional tern go-mode company rust-mode bind-map bind-key yasnippet packed async pythonic dash s auto-complete popup company-anaconda anaconda-mode zenburn-theme which-key web-mode spaceline solarized-theme prodigy pip-requirements org-pomodoro org-download live-py-mode js2-refactor jbeans-theme hy-mode gruvbox-theme flatland-theme evil-nerd-commenter dumb-jump doom-themes counsel-projectile counsel swiper company-web cargo ace-window ace-link smartparens evil ycmd flycheck helm ivy avy markdown-mode org-plus-contrib magit magit-popup php-mode projectile f js2-mode zen-and-art-theme yapfify yaml-mode xterm-color ws-butler winum wgrep web-completion-data web-beautify vue-mode volatile-highlights vlf vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs request-deferred ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode projectile-ripgrep professional-theme powerline popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-present org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mwim mustang-theme multiple-cursors multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js-doc jazz-theme ivy-hydra ir-black-theme inkpot-theme info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-make helm-core hc-zenburn-theme gruber-darker-theme grandshell-theme goto-chg gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flycheck-ycmd flycheck-rust flycheck-pos-tip flx-ido flatui-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav drupal-mode dracula-theme django-theme diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-ycmd company-tern company-statistics company-go column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme all-the-icons alert alect-themes aggressive-indent afternoon-theme adaptive-wrap ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((class color) (min-colors 65535)) (:background "#262B2C" :foreground "#eeeeec")) (((class color) (min-colors 256)) (:background "color-234" :foreground "color-255")) (((class color) (min-colors 88)) (:background "color-80" :foreground "color-87")) (t (:background "black" :foreground "white")))))
