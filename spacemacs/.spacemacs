@@ -142,16 +142,16 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(naquadah)
+   dotspacemacs-themes '(ujelly)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Iosevka Term"
-                               :size 16
-                               :weight normal
+                               :size 14
+                               :weight medium
                                :width normal
-                               :powerline-scale 1.5)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -356,7 +356,7 @@ you should place your code here."
   (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
   (define-key evil-normal-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
   (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0.05)
+  (setq company-idle-delay 0.5)
   (setq company-async-timeout 20)
   (setq company-async-wait 0.5)
 
@@ -383,7 +383,7 @@ you should place your code here."
   (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/dashboards_v2")
 
   ;; Company Python backends
-  (setq company-backends-python-mode '((company-ycmd company-anaconda)
+  (setq company-backends-python-mode '((company-ycmd)
                                        (company-dabbrev-code company-keywords)
                                        company-files company-dabbrev))
 
