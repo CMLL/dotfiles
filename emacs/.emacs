@@ -114,7 +114,7 @@
 
 ;; Anaconda
 (add-hook 'python-mode-hook 'anaconda-mode)
-(add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src")
+;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src")
 
 ;; Company-mode
 (use-package company
@@ -143,7 +143,7 @@
 (scroll-bar-mode 0)
 
 ;; Color theme
-(load-theme 'material t)
+(load-theme 'doom-molokai t)
 
 ;; Autoload js mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))

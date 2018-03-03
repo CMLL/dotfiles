@@ -23,7 +23,7 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Shift-x spawm i3lock -c 00000 -d
 # hc keybind $Mod-Return spawn ${TERMINAL:-xterm} # use your $TERMINAL with xterm as fallback
-hc keybind $Mod-Return spawn termite
+hc keybind $Mod-Return spawn tilix
 hc keybind $Mod-d spawn rofi -show run
 
 # basic movement
@@ -136,7 +136,7 @@ hc attr theme.active.inner_color '#3E4A00'
 hc attr theme.active.outer_color '#3E4A00'
 hc attr theme.background_color '#141414'
 
-hc set window_gap 8
+hc set window_gap 10
 hc set frame_padding 0
 hc set smart_window_surroundings 0
 hc set smart_frame_surroundings 1
@@ -175,13 +175,14 @@ hc detect_monitors
 {
     pids=( )
     # reserve some space for the panel on monitor 0
-    hc pad 0 25 0 0 0
-    hc pad 1 25 0 0 0
-    hc pad 2 25 0 0 0
+    hc pad 0 30 "" "" 0
+    hc pad 1 "" "" "" 0
+    hc pad 2 "" "" "" 0
     # start the panel itself and remember its pid
-    polybar main &
-    polybar left &
-    polybar center &
+    # polybar main &
+    # polybar left &
+    # polybar center &
+    budgie-panel &
     pids+=( $! )
     # or start another panel:
     # mypanel &
@@ -190,7 +191,7 @@ hc detect_monitors
     herbstclient -w '(quit_panel|reload)'
     # stopp all started panels
     # kill ${pids[@]}
-    killall polybar
+    killall budgie-panel
 } &one
 
-feh --bg-scale ~/.wallpaper.jpg
+feh --bg-center ~/.wallpaper.jpg

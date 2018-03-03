@@ -20,10 +20,10 @@ values."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation nil
+   dotspacemacs-enable-lazy-installation 'unused
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
-   dotspacemacs-ask-for-lazy-installation nil
+   dotspacemacs-ask-for-lazy-installation t
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     shell-scripts
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -54,7 +55,7 @@ values."
      python
      syntax-checking
      ranger
-     ycmd
+     ;; ycmd
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
@@ -68,7 +69,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ripgrep projectile-ripgrep vlf vue-mode doom-themes)
+   dotspacemacs-additional-packages '(ripgrep projectile-ripgrep vlf vue-mode yasnippet-snippets)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -142,16 +143,16 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(ujelly)
+   dotspacemacs-themes '(material)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Iosevka Term"
-                               :size 14
+                               :size 15
                                :weight medium
                                :width normal
-                               :powerline-scale 1.0)
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -197,7 +198,8 @@ values."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 1 ;; Location where to auto-save files. Possible values are `original' to
+   dotspacemacs-large-file-size 1
+   ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
@@ -260,8 +262,18 @@ values."
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
@@ -356,19 +368,19 @@ you should place your code here."
   (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
   (define-key evil-normal-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
   (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0.5)
+  (setq company-idle-delay 0.1)
   (setq company-async-timeout 20)
   (setq company-async-wait 0.5)
 
   ;; YCMD
-  (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
-  (setq ycmd-force-semantic-completion nil)
-  (setq ycmd-python-binary-path "/home/cllamach/.virtualenvs/controlpanel/bin/python")
-  (add-hook 'python-mode-hook 'ycmd-mode)
-  (defun company-mode-semantic-complete ()
-    (interactive)
-    (let ((ycmd-force-semantic-completion t))
-      (company-complete)))
+  ;; (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
+  ;; (setq ycmd-force-semantic-completion nil)
+  ;; (setq ycmd-python-binary-path "/home/cllamach/.virtualenvs/controlpanel/bin/python")
+  ;; (add-hook 'python-mode-hook 'ycmd-mode)
+  ;; (defun company-mode-semantic-complete ()
+  ;;   (interactive)
+  ;;   (let ((ycmd-force-semantic-completion t))
+  ;;     (company-complete)))
 
   ;; Extra python paths
   (require 'anaconda-mode)
@@ -383,7 +395,7 @@ you should place your code here."
   (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/dashboards_v2")
 
   ;; Company Python backends
-  (setq company-backends-python-mode '((company-ycmd)
+  (setq company-backends-python-mode '((company-anaconda)
                                        (company-dabbrev-code company-keywords)
                                        company-files company-dabbrev))
 
@@ -587,14 +599,14 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8ed752276957903a270c797c4ab52931199806ccd9f0c3bb77f6f4b9e71b9272" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" default)))
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "42b8102c1234a9f680722953161c1127cc59ec68ad8d5c710af60d68c3b6e6ef" "7feeed063855b06836e0262f77f5c6d3f415159a98a9676d549bfeb6c49637c4" "58c6711a3b568437bab07a30385d34aacf64156cc5137ea20e799984f4227265" "ecb9fe1d5b165a35499191a909b2b5710a52935614058b327a39bfbbb07c7dc8" "b85fc9f122202c71b9884c5aff428eb81b99d25d619ee6fde7f3016e08515f07" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "f64c9f8b4241b680b186f4620afb9c82fa2a76cf4498a7431f90db59bb1892eb" "732b807b0543855541743429c9979ebfb363e27ec91e82f463c91e68c772f6e3" "a24c5b3c12d147da6cef80938dca1223b7c7f70f2f382b26308eba014dc4833a" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "4af6fad34321a1ce23d8ab3486c662de122e8c6c1de97baed3aa4c10fe55e060" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (ghub edit-indirect ssass-mode vue-html-mode ripgrep spinner log4e gntp mmm-mode skewer-mode simple-httpd json-snatcher json-reformat hydra parent-mode haml-mode fringe-helper git-gutter+ git-gutter seq pos-tip flx git-commit with-editor iedit anzu highlight memoize font-lock+ diminish autothemer pkg-info let-alist request deferred epl dash-functional tern go-mode company rust-mode bind-map bind-key yasnippet packed async pythonic dash s auto-complete popup company-anaconda anaconda-mode zenburn-theme which-key web-mode spaceline solarized-theme prodigy pip-requirements org-pomodoro org-download live-py-mode js2-refactor jbeans-theme hy-mode gruvbox-theme flatland-theme evil-nerd-commenter dumb-jump doom-themes counsel-projectile counsel swiper company-web cargo ace-window ace-link smartparens evil ycmd flycheck helm ivy avy markdown-mode org-plus-contrib magit magit-popup php-mode projectile f js2-mode zen-and-art-theme yapfify yaml-mode xterm-color ws-butler winum wgrep web-completion-data web-beautify vue-mode volatile-highlights vlf vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs request-deferred ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode projectile-ripgrep professional-theme powerline popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-present org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mwim mustang-theme multiple-cursors multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js-doc jazz-theme ivy-hydra ir-black-theme inkpot-theme info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-make helm-core hc-zenburn-theme gruber-darker-theme grandshell-theme goto-chg gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flycheck-ycmd flycheck-rust flycheck-pos-tip flx-ido flatui-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav drupal-mode dracula-theme django-theme diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-ycmd company-tern company-statistics company-go column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme all-the-icons alert alect-themes aggressive-indent afternoon-theme adaptive-wrap ac-ispell))))
+    (insert-shebang fish-mode company-shell yasnippet-snippets zenburn-theme yapfify white-sand-theme which-key web-mode vue-mode vue-html-mode use-package scss-mode rebecca-theme persp-mode org-mime mwim monokai-theme live-py-mode linum-relative js2-refactor hy-mode flx-ido exotica-theme eshell-prompt-extras dumb-jump diff-hl define-word counsel-projectile counsel swiper color-theme-sanityinc-tomorrow auto-compile anti-zenburn-theme ample-theme alect-themes ace-window dash-functional company smartparens highlight evil goto-chg flycheck helm helm-core ivy markdown-mode alert org-plus-contrib magit magit-popup git-commit ghub with-editor async yasnippet php-mode projectile f rust-mode powerline dash zen-and-art-theme yaml-mode xterm-color ws-butler winum wgrep web-beautify volatile-highlights vlf vi-tilde-fringe uuidgen unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme ssass-mode sql-indent spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme sass-mode reverse-theme restart-emacs request ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode projectile-ripgrep professional-theme prodigy popwin planet-theme pip-requirements phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme pcre2el paradox packed orgit organic-green-theme org-present org-pomodoro org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mustang-theme multiple-cursors multi-term move-text monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum log4e livid-mode link-hint light-soap-theme less-css-mode json-mode js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme inkpot-theme info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-make hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gntp gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flycheck-rust flycheck-pos-tip flx flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z esh-help emmet-mode elisp-slime-nav edit-indirect drupal-mode dracula-theme django-theme diminish darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-anaconda column-enforce-mode color-theme-sanityinc-solarized coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-key badwolf-theme auto-yasnippet auto-highlight-symbol apropospriate-theme ample-zen-theme aggressive-indent afternoon-theme adaptive-wrap ace-link ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 65535)) (:background "#262B2C" :foreground "#eeeeec")) (((class color) (min-colors 256)) (:background "color-234" :foreground "color-255")) (((class color) (min-colors 88)) (:background "color-80" :foreground "color-87")) (t (:background "black" :foreground "white")))))
+ '(default ((t (:family "Iosevka Term" :foundry "CYEL" :slant normal :weight normal :height 113 :width normal)))))
