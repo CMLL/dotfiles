@@ -23,7 +23,7 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Shift-x spawm i3lock -c 00000 -d
 # hc keybind $Mod-Return spawn ${TERMINAL:-xterm} # use your $TERMINAL with xterm as fallback
-hc keybind $Mod-Return spawn tilix
+hc keybind $Mod-Return spawn terminator
 hc keybind $Mod-d spawn rofi -show run
 
 # basic movement
