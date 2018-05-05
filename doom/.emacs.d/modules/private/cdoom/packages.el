@@ -1,6 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; private/cdoom/packages.el
 
+;;; Code:
+
 ;; Ripgrep
 (package! projectile-ripgrep)
 
@@ -9,3 +11,6 @@
 
 ;; Vue mode
 (package! vue-mode)
+
+;; Magit Evil
+(package! evil-magit)
