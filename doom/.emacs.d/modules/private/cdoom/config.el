@@ -3,7 +3,7 @@
 
 ;; Company Settings
 (add-hook! company-mode
-  (setq company-idle-delay 0
+  (setq company-idle-delay 0.5
         company-minimum-prefix-length 3))
 
 ;; Load Company Anaconda

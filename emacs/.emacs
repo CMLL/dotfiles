@@ -68,16 +68,44 @@
  'gorepl-mode
  'exec-path-from-shell
  'multi-term
- 'doremi
- 'doremi-cmd
+ ;; 'doremi
+ ;; 'doremi-cmd
  'yaml-mode
  'yasnippet
  'yasnippet-snippets
  'material-theme
- 'anaconda-mode
- 'company-anaconda
+ ;; 'anaconda-mode
+ ;; 'company-anaconda
  )
 (package-initialize)
+
+
+;; LSP Mode
+(use-package lsp-mode
+  :ensure t
+  :config
+
+  (require 'lsp-imenu)
+  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+  (lsp-define-stdio-client lsp-python "python"
+			   #'projectile-project-root
+			   '("pyls"))
+
+  (add-hook 'python-mode-hook
+	    (lambda ()
+	      (lsp-python-enable)))
+  )
+
+(use-package lsp-ui
+  :ensure t
+  :config
+  (setq lsp-ui-sideline-ignore-duplicate t)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
 
 ;; Tool bar
 (tool-bar-mode -1)
@@ -113,7 +141,7 @@
 	enable-recursive-minibuffers t))
 
 ;; Anaconda
-(add-hook 'python-mode-hook 'anaconda-mode)
+;; (add-hook 'pythoy-mode-hook 'anaconda-mode)
 ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src")
 
 ;; Company-mode
@@ -121,7 +149,7 @@
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   (require 'company-go)
-  (add-to-list 'company-backends 'company-anaconda)
+  ;;(add-to-list 'company-backends 'company-anaconda)
   (global-set-key (kbd "C-.") 'company-complete-common)
   )
 
@@ -226,7 +254,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Doremi
-(global-set-key (kbd "C-x t w") 'doremi-window-height+)
+;;(global-set-key (kbd "C-x t w") 'doremi-window-height+)
 
 ;; Ivy keybinds
 (global-set-key (kbd "\C-s") 'swiper)
@@ -435,7 +463,7 @@
   :init (lambda () (pyvenv-workon "appliance")))
 
 (prodigy-define-service
-  :name "Discovert Engine"
+  :name "Discovery Engine"
   :command "python"
   :args '("DiscoveryEngine.py" "-c" "discovery.cfg")
   :cwd "/home/cllamach/Panopta/appliance/src/discovery/"

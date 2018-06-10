@@ -59,7 +59,7 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
-            shell-default-term-shell "/usr/bin/zsh")
+            shell-default-term-shell "/usr/bin/fish")
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t) ;
@@ -69,11 +69,11 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ripgrep projectile-ripgrep vlf vue-mode yasnippet-snippets)
+   dotspacemacs-additional-packages '(ripgrep projectile-ripgrep vlf vue-mode yasnippet-snippets lsp-mode lsp-ui company-lsp)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(org-projectile firebelly-theme niflheim-theme pastels-on-dark-theme zonokai-theme tronesque-theme)
+   dotspacemacs-excluded-packages '(org-projectile firebelly-theme niflheim-theme pastels-on-dark-theme zonokai-theme tronesque-theme anaconda-mode anaconda-eldoc-mode company-anaconda)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -326,13 +326,13 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  ;; Anaconda mode
-  (spacemacs/set-leader-keys-for-major-mode 'python-mode
-    "hh" 'anaconda-mode-show-doc
-    "ga" 'anaconda-mode-find-assignments
-    "gb" 'anaconda-mode-go-back
-    "gu" 'anaconda-mode-find-references
-    "gd" 'anaconda-mode-find-definitions)
+  ;; ;; Anaconda mode
+  ;; (spacemacs/set-leader-keys-for-major-mode 'python-mode
+  ;;   "hh" 'anaconda-mode-show-doc
+  ;;   "ga" 'anaconda-mode-find-assignments
+  ;;   "gb" 'anaconda-mode-go-back
+  ;;   "gu" 'anaconda-mode-find-references
+  ;;   "gd" 'anaconda-mode-find-definitions)
 
   ;; Pytest
   (setq python-test-runner 'pytest)
@@ -365,12 +365,30 @@ you should place your code here."
   (setq ivy-count-format "(%d/%d) ")
 
   ;; Company mode
-  (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
-  (define-key evil-normal-state-map (kbd "C-SPC") 'company-complete-common-or-cycle)
-  (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0.1)
-  (setq company-async-timeout 20)
-  (setq company-async-wait 0.5)
+  (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete-common)
+  (define-key evil-normal-state-map (kbd "C-SPC") 'company-complete-common)
+  (setq company-idle-delay 0.5)
+
+  ;; LSP Mode
+
+  (use-package lsp-mode
+    :config
+    (require 'lsp-imenu)
+    (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+    (lsp-define-stdio-client lsp-python "python"
+                             #'projectile-project-root
+                             '("pyls"))
+
+    (add-hook 'python-mode-hook
+              (lambda ()
+                (lsp-python-enable)))
+    (use-package lsp-ui
+      :config
+      (setq lsp-ui-sideline-ignore-duplicate t)
+      (add-hook 'lsp-mode-hook 'lsp-ui-mode)))
+
+  (setq company-backends-python-mode '(company-lsp))
+  
 
   ;; YCMD
   ;; (setq ycmd-server-command '("python" "/home/cllamach/ycmd/ycmd"))
@@ -383,21 +401,21 @@ you should place your code here."
   ;;     (company-complete)))
 
   ;; Extra python paths
-  (require 'anaconda-mode)
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/library")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/tests")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/plugins")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/models")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/thirdparty")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/controlpanel")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/aggregator")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/metricpoller")
-  (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/dashboards_v2")
+  ;; (require 'anaconda-mode)
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/library")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/tests")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/agent/src/linux/plugins")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/models")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/thirdparty")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/controlpanel")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/aggregator")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/metricpoller")
+  ;; (add-to-list 'python-shell-extra-pythonpaths "/home/cllamach/Panopta/classic/src/dashboards_v2")
 
-  ;; Company Python backends
-  (setq company-backends-python-mode '((company-anaconda)
-                                       (company-dabbrev-code company-keywords)
-                                       company-files company-dabbrev))
+  ;; ;; Company Python backends
+  ;; (setq company-backends-python-mode '((company-anaconda)
+  ;;                                      (company-dabbrev-code company-keywords)
+  ;;                                      company-files company-dabbrev))
 
 
   ;; Browser
@@ -603,10 +621,10 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (insert-shebang fish-mode company-shell yasnippet-snippets zenburn-theme yapfify white-sand-theme which-key web-mode vue-mode vue-html-mode use-package scss-mode rebecca-theme persp-mode org-mime mwim monokai-theme live-py-mode linum-relative js2-refactor hy-mode flx-ido exotica-theme eshell-prompt-extras dumb-jump diff-hl define-word counsel-projectile counsel swiper color-theme-sanityinc-tomorrow auto-compile anti-zenburn-theme ample-theme alect-themes ace-window dash-functional company smartparens highlight evil goto-chg flycheck helm helm-core ivy markdown-mode alert org-plus-contrib magit magit-popup git-commit ghub with-editor async yasnippet php-mode projectile f rust-mode powerline dash zen-and-art-theme yaml-mode xterm-color ws-butler winum wgrep web-beautify volatile-highlights vlf vi-tilde-fringe uuidgen unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme ssass-mode sql-indent spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme sass-mode reverse-theme restart-emacs request ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode projectile-ripgrep professional-theme prodigy popwin planet-theme pip-requirements phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme pcre2el paradox packed orgit organic-green-theme org-present org-pomodoro org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mustang-theme multiple-cursors multi-term move-text monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum log4e livid-mode link-hint light-soap-theme less-css-mode json-mode js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme inkpot-theme info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-make hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gntp gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flycheck-rust flycheck-pos-tip flx flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z esh-help emmet-mode elisp-slime-nav edit-indirect drupal-mode dracula-theme django-theme diminish darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-anaconda column-enforce-mode color-theme-sanityinc-solarized coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-key badwolf-theme auto-yasnippet auto-highlight-symbol apropospriate-theme ample-zen-theme aggressive-indent afternoon-theme adaptive-wrap ace-link ac-ispell))))
+    (lsp-ui company-lsp lsp-mode ripgrep spinner skewer-mode simple-httpd json-snatcher json-reformat js2-mode hydra parent-mode haml-mode fringe-helper git-gutter+ git-gutter pos-tip let-alist iedit anzu autothemer pkg-info epl web-completion-data tern go-mode bind-map anaconda-mode pythonic s avy auto-complete popup insert-shebang fish-mode company-shell yasnippet-snippets zenburn-theme yapfify white-sand-theme which-key web-mode vue-mode vue-html-mode use-package scss-mode rebecca-theme persp-mode org-mime mwim monokai-theme live-py-mode linum-relative js2-refactor hy-mode flx-ido exotica-theme eshell-prompt-extras dumb-jump diff-hl define-word counsel-projectile counsel swiper color-theme-sanityinc-tomorrow auto-compile anti-zenburn-theme ample-theme alect-themes ace-window dash-functional company smartparens highlight evil goto-chg flycheck helm helm-core ivy markdown-mode alert org-plus-contrib magit magit-popup git-commit ghub with-editor async yasnippet php-mode projectile f rust-mode powerline dash zen-and-art-theme yaml-mode xterm-color ws-butler winum wgrep web-beautify volatile-highlights vlf vi-tilde-fringe uuidgen unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme ssass-mode sql-indent spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smex smeargle slim-mode shell-pop seti-theme sass-mode reverse-theme restart-emacs request ranger rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode projectile-ripgrep professional-theme prodigy popwin planet-theme pip-requirements phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme pcre2el paradox packed orgit organic-green-theme org-present org-pomodoro org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mustang-theme multiple-cursors multi-term move-text monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum log4e livid-mode link-hint light-soap-theme less-css-mode json-mode js-doc jbeans-theme jazz-theme ivy-hydra ir-black-theme inkpot-theme info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-make hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gntp gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flycheck-rust flycheck-pos-tip flx flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z esh-help emmet-mode elisp-slime-nav edit-indirect drupal-mode dracula-theme django-theme diminish darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-anaconda column-enforce-mode color-theme-sanityinc-solarized coffee-mode clues-theme clean-aindent-mode cherry-blossom-theme cargo busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-key badwolf-theme auto-yasnippet auto-highlight-symbol apropospriate-theme ample-zen-theme aggressive-indent afternoon-theme adaptive-wrap ace-link ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Iosevka Term" :foundry "CYEL" :slant normal :weight normal :height 113 :width normal)))))
+ )
