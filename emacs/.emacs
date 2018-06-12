@@ -64,11 +64,11 @@
 (use-package evil-magit
   :ensure t)
 
-
 ;; Projectile
 (use-package projectile
   :ensure t
   :config
+  (projectile-mode)
   (setq projectile-completion-system 'ivy
 	projectie-switch-project-action #'projectile-commander
 	projectile-mode-line
@@ -233,10 +233,6 @@
   :after treemacs projectile
   :ensure t)
 
-
-
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -245,10 +241,11 @@
  '(global-company-mode t)
  '(package-selected-packages
    (quote
-    (treemacs-projectile treemacs-evil treemacs spaceline-all-the-icons spaceline pyvenv dired counsel-projectile which-key doom-themes company-lsp lsp-ui lsp-mode company ripgrep counsel swiper use-package ivy evil-nerd-commenter evil-magit evil-leader))))
+    (treemacs-projectile treemacs-evil treemacs spaceline-all-the-icons spaceline pyvenv dired counsel-projectile which-key doom-themes company-lsp lsp-ui lsp-mode company ripgrep counsel swiper use-package ivy evil-nerd-commenter evil-magit evil-leader)))
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 119 :width normal)))))
