@@ -24,10 +24,10 @@
 (use-package evil-leader
   :ensure t
   :config
+  (global-evil-leader-mode)
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
     ;; Files
-    "bp" 'counsel-projectile
     "bf" 'counsel-find-file
     "br" 'counsel-recentf
     "bd" 'dired
@@ -35,6 +35,7 @@
     "bt" 'treemacs
     ;; Projectile
     "pp" 'projectile-switch-project
+    "pf" 'counsel-projectile
     ;; Windows
     "ww" 'ace-window
     "wx" 'ace-delete-window
@@ -42,8 +43,10 @@
     "wh" 'split-window-horizontally
     ;; Git
     "gs" 'magit-status
+    "gb" 'magit-blame
     ;; Search
     "rr" 'ripgrep-regexp
+    "rs" 'swiper
     ;; Comment
     "ci" 'evilnc-comment-or-uncomment-lines
     "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -54,6 +57,9 @@
     ;; Virtualenv
     "vw" 'pyvenv-workon
     "va" 'pyvenv-activate
+    ;; Code
+    ".d" 'xref-find-definitions
+    ".r" 'xref-find-references
     ))
 
 ;; Magit
@@ -98,6 +104,7 @@
 
 ;; Ace Window
 (use-package ace-window
+
   :ensure t
   :bind
   ("M-w" . ace-window))
@@ -111,36 +118,43 @@
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay nil)
+  (setq company-idle-delay 0.5)
+  (setq company-minimum-prefix-length 3)
   :bind
   ("C-SPC" . 'company-complete-common))
 
 
 ;; LSP
-(use-package lsp-mode
-  :ensure t
-  :config
-  (require 'lsp-imenu)
-  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
-  (lsp-define-stdio-client lsp-python "python"
-			   #'projectile-project-root
-			   '("pyls"))
-  (add-hook 'python-mode-hook
-	    (lambda ()
-	      (lsp-python-enable))))
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :config
+;;   (require 'lsp-imenu)
+;;   (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+;;   (lsp-define-stdio-client lsp-python "python"
+;; 			   #'projectile-project-root
+;; 			   '("pyls"))
+;;   (add-hook 'python-mode-hook
+;; 	    (lambda ()
+;; 	      (lsp-python-enable))))
 
-;; LSP UI
-(use-package lsp-ui
-  :ensure t
-  :config
-  (setq lsp-ui-sideline-ignore-duplicate t)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+;; LSP UI is pretty slow
+;; ;; LSP UI
+;; (use-package lsp-ui
+;; 	     :ensure t
+;; 	     :config
+;; 	     (setq ls-ui-sideline-ignore-duplicate t)
+;; 	     (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 ;; Company LSP
-(use-package company-lsp
+;; (use-package company-lsp
+;;   :ensure t
+;;   :config
+;;   (push 'company-lsp company-backends))
+
+(use-package eglot
   :ensure t
   :config
-  (push 'company-lsp company-backends))
+  (add-hook 'python-mode-hook 'eglot))
 
 ;; Doom theme
 (use-package doom-themes
@@ -152,6 +166,7 @@
 (use-package flycheck
   :ensure t
   :config
+  (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
 ;; Which key
@@ -180,6 +195,20 @@
 ;; Safe delete
 (use-package package-safe-delete
   :ensure t)
+
+;; Yasnippet
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode))
+(use-package yasnippet-snippets
+  :ensure t)
+
+;; Web-Mode
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
 
 ;; Treemacs
 (use-package treemacs
@@ -233,6 +262,18 @@
   :after treemacs projectile
   :ensure t)
 
+;; store all backup and autosave files in the tmp dir
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+;; Savehist
+(setq history-length 100)
+(put 'minibuffer-history 'history-length 50)
+(put 'evil-ex-history 'history-length 50)
+(put 'kill-ring 'history-length 25)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -241,11 +282,12 @@
  '(global-company-mode t)
  '(package-selected-packages
    (quote
-    (treemacs-projectile treemacs-evil treemacs spaceline-all-the-icons spaceline pyvenv dired counsel-projectile which-key doom-themes company-lsp lsp-ui lsp-mode company ripgrep counsel swiper use-package ivy evil-nerd-commenter evil-magit evil-leader)))
+    (web-mode yasnippet-snippets treemacs-projectile treemacs-evil treemacs spaceline-all-the-icons spaceline pyvenv dired counsel-projectile which-key doom-themes company ripgrep counsel swiper use-package ivy evil-nerd-commenter evil-magit evil-leader)))
+ '(savehist-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 119 :width normal)))))
+ '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 97 :width normal)))))

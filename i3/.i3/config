@@ -111,14 +111,18 @@ set $h2 "HDMI-2"
 set $laptop "eDP-1"
 
 # Bind workspace to monitors
-workspace $w1 output $h1
-workspace $w2 output $h2
-workspace $w3 output $h2
-workspace $w4 output $laptop
-workspace $w5 output $h1
-workspace $w6 output $h1
-workspace $w7 output $h1
-workspace $w8 output $h2
+# workspace $w1 output $h1
+# workspace $w2 output $h2
+# workspace $w3 output $h2
+# workspace $w4 output $laptop
+# workspace $w5 output $h1
+# workspace $w6 output $h1
+# workspace $w7 output $h1
+# workspace $w8 output $h2
+
+# Move workspace between workspaces
+bindsym $mod+Shift+a move workspace to output left
+bindsym $mod+Shift+d move workspace to output right
 
 # switch to workspace
 bindsym $mod+1 workspace $w1
@@ -133,16 +137,16 @@ bindsym $mod+9 workspace $w9
 bindsym $mod+0 workspace $w10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $w1
-bindsym $mod+Shift+2 move container to workspace $w2
-bindsym $mod+Shift+3 move container to workspace $w3
-bindsym $mod+Shift+4 move container to workspace $w4
-bindsym $mod+Shift+5 move container to workspace $w5
-bindsym $mod+Shift+6 move container to workspace $w6
-bindsym $mod+Shift+7 move container to workspace $w7
-bindsym $mod+Shift+8 move container to workspace $w8
-bindsym $mod+Shift+9 move container to workspace $w9
-bindsym $mod+Shift+0 move container to workspace $w10
+bindsym $mod+Shift+1 move container to workspace $w1; workspace $w1;
+bindsym $mod+Shift+2 move container to workspace $w2; workspace $w2;
+bindsym $mod+Shift+3 move container to workspace $w3; workspace $w3;
+bindsym $mod+Shift+4 move container to workspace $w4; workspace $w4;
+bindsym $mod+Shift+5 move container to workspace $w5; workspace $w5;
+bindsym $mod+Shift+6 move container to workspace $w6; workspace $w6;
+bindsym $mod+Shift+7 move container to workspace $w7; workspace $w7;
+bindsym $mod+Shift+8 move container to workspace $w8; workspace $w8;
+bindsym $mod+Shift+9 move container to workspace $w9; workspace $w9;
+bindsym $mod+Shift+0 move container to workspace $w10; workspace $w10;
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -191,14 +195,19 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightne
 
 # window controls
 #
-assign [class="google-chrome"] $w3
-assign [class="Slack"] $w5
-assign [class="Valentina Studio"] $w9
+assign [class="(?i)(?:slack)"] $w5
+assign [class="(?i)(?:firefox)"] $w3
+assign [class="(?i)(?:spotify)"] $w4
+assign [class="(?i)(?:DBeaver"] $w9
+
+# focus, floating, & sticky
+for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
+for_window [window_role="(?i)(?:pop-up|setup)"] floating enable
 
 # Gaps
 #
-gaps inner 8
-gaps outer 8
+# gaps inner 8
+# gaps outer 8
 
 set $bg-color #2f343f
 set $active-text-color #212121
@@ -209,7 +218,17 @@ set $inactive-text-color #ffffff
 set $white #e6e1dc
 
 # Borders
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 3
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #999999 #285577 #ffffff #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+gaps inner 5
+gaps outer 3
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -241,7 +260,7 @@ exec --no-startup-id ./.triple.sh
 
 # Compton and wallpaper
 # exec --no-startup-id compton -b
-exec_always --no-startup-id feh --bg-scale .wallpaper.jpg
+exec_always --no-startup-id feh --bg-center .wallpaper.jpg
 
 # XFCE Settings
 # exec --no-startup-id xfsettingsd --sm-client-disable &
