@@ -126,12 +126,10 @@
   :bind
   ("C-SPC" . 'company-complete-common))
 
-
 ;; LSP
 (use-package lsp-mode
   :ensure t
   :config
-  ;; LSP something tries to look into locks, disable them
   (setq create-lockfiles nil)
   (require 'lsp-imenu)
   (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
@@ -139,8 +137,25 @@
 			   "python"
 			   (lambda () default-directory)
 			   '("pyls"))
+  (lsp-define-stdio-client lsp-rust
+			   "rls"
+			   (lambda () default-directory)
+			   '("rls"))
   (add-hook 'python-mode-hook
-	    #'lsp-python-enable))
+	    #'lsp-python-enable)
+  (add-hook 'python-mode-hook
+	    (lambda ()
+	      (when (> (buffer-size) 102400)
+		(message
+		 (concat "Buffer size %s larger than expected 102400 "
+			 " Turning off autocompletion")
+		 (buffer-size)
+		 (buffer-name))
+		(company-mode -1)
+		(kill-local-variable 'company-idle-delay)
+		(kill-local-variable 'company-backends))))
+  (add-hook 'rust-mode-hook
+	    #'lsp-rust-enable))
 
 
 ;; Company LSP
@@ -158,11 +173,15 @@
 ;;   (add-to-list 'company-backends 'elpy-company-backend))
 
 
+;; Rust Mode
+(use-package rust-mode
+  :ensure t)
+
 ;; Doom theme
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-one t))
+  (load-theme 'doom-spacegrey t))
 
 ;; Flycheck
 (use-package flycheck
@@ -178,7 +197,7 @@
   :ensure t
   :config
   (which-key-mode)
-  (setq which-key-idle-delay 0)
+  (setq which-key-idle-delay 0.01)
   (which-key-declare-prefixes "SPC b" "Files")
   (which-key-declare-prefixes "SPC g" "Git")
   (which-key-declare-prefixes "SPC p" "Project")
@@ -232,11 +251,10 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline ripgrep pyvenv package-safe-delete evil-magit evil-leader eglot doom-themes counsel-projectile company)))
- '(tool-bar-mode nil))
+    (rust-mode yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline-all-the-icons ripgrep pyvenv package-safe-delete lsp-ui evil-nerd-commenter evil-magit evil-leader doom-themes counsel-projectile company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 113 :width normal)))))
+ )
