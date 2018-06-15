@@ -6,10 +6,14 @@
 
 (package-initialize)
 
+
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+;; Disable Tool bar
+(tool-bar-mode 0)
 
 
 ;; Evil
@@ -32,7 +36,6 @@
     "br" 'counsel-recentf
     "bd" 'dired
     "bb" 'ivy-switch-buffer
-    "bt" 'treemacs
     ;; Projectile
     "pp" 'projectile-switch-project
     "pf" 'counsel-projectile
@@ -47,6 +50,7 @@
     ;; Search
     "rr" 'ripgrep-regexp
     "rs" 'swiper
+    "rt" 'counsel-imenu
     ;; Comment
     "ci" 'evilnc-comment-or-uncomment-lines
     "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -104,7 +108,6 @@
 
 ;; Ace Window
 (use-package ace-window
-
   :ensure t
   :bind
   ("M-w" . ace-window))
@@ -118,43 +121,42 @@
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0.5)
+  (setq company-idle-delay 0.01)
   (setq company-minimum-prefix-length 3)
   :bind
   ("C-SPC" . 'company-complete-common))
 
 
 ;; LSP
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :config
-;;   (require 'lsp-imenu)
-;;   (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
-;;   (lsp-define-stdio-client lsp-python "python"
-;; 			   #'projectile-project-root
-;; 			   '("pyls"))
-;;   (add-hook 'python-mode-hook
-;; 	    (lambda ()
-;; 	      (lsp-python-enable))))
-
-;; LSP UI is pretty slow
-;; ;; LSP UI
-;; (use-package lsp-ui
-;; 	     :ensure t
-;; 	     :config
-;; 	     (setq ls-ui-sideline-ignore-duplicate t)
-;; 	     (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-
-;; Company LSP
-;; (use-package company-lsp
-;;   :ensure t
-;;   :config
-;;   (push 'company-lsp company-backends))
-
-(use-package eglot
+(use-package lsp-mode
   :ensure t
   :config
-  (add-hook 'python-mode-hook 'eglot))
+  ;; LSP something tries to look into locks, disable them
+  (setq create-lockfiles nil)
+  (require 'lsp-imenu)
+  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+  (lsp-define-stdio-client lsp-python
+			   "python"
+			   (lambda () default-directory)
+			   '("pyls"))
+  (add-hook 'python-mode-hook
+	    #'lsp-python-enable))
+
+
+;; Company LSP
+(use-package company-lsp
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
+
+
+;; Elpy
+;; (use-package elpy
+;;   :ensure t
+;;   :config
+;;   (elpy-enable)
+;;   (add-to-list 'company-backends 'elpy-company-backend))
+
 
 ;; Doom theme
 (use-package doom-themes
@@ -166,8 +168,10 @@
 (use-package flycheck
   :ensure t
   :config
-  (global-flycheck-mode)
-  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
+  (add-hook 'python-mode-hook 'flycheck-mode)
+  (setq
+   flycheck-highlighting-mode 'lines
+   flycheck-check-syntax-automatically '(mode-enabled save)))
 
 ;; Which key
 (use-package which-key
@@ -210,58 +214,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
 
-;; Treemacs
-(use-package treemacs
-  :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-          treemacs-file-event-delay           5000
-          treemacs-follow-after-init          t
-          treemacs-follow-recenter-distance   0.1
-          treemacs-goto-tag-strategy          'refetch-index
-          treemacs-indentation                2
-          treemacs-indentation-string         " "
-          treemacs-is-never-other-window      nil
-          treemacs-no-png-images              nil
-          treemacs-project-follow-cleanup     nil
-          treemacs-recenter-after-file-follow nil
-          treemacs-recenter-after-tag-follow  nil
-          treemacs-show-hidden-files          t
-          treemacs-silent-filewatch           nil
-          treemacs-silent-refresh             nil
-          treemacs-sorting                    'alphabetic-desc
-          treemacs-tag-follow-cleanup         t
-          treemacs-tag-follow-delay           1.5
-          treemacs-width                      35)
-
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null (executable-find "python3"))))
-      (`(t . t)
-       (treemacs-git-mode 'extended))
-      (`(t . _)
-       (treemacs-git-mode 'simple))))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-(use-package treemacs-evil
-  :after treemacs evil
-  :ensure t)
-(use-package treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
-
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -273,21 +225,18 @@
 (put 'minibuffer-history 'history-length 50)
 (put 'evil-ex-history 'history-length 50)
 (put 'kill-ring 'history-length 25)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(global-company-mode t)
  '(package-selected-packages
    (quote
-    (web-mode yasnippet-snippets treemacs-projectile treemacs-evil treemacs spaceline-all-the-icons spaceline pyvenv dired counsel-projectile which-key doom-themes company ripgrep counsel swiper use-package ivy evil-nerd-commenter evil-magit evil-leader)))
- '(savehist-mode t)
+    (yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline ripgrep pyvenv package-safe-delete evil-magit evil-leader eglot doom-themes counsel-projectile company)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 97 :width normal)))))
+ '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 113 :width normal)))))
