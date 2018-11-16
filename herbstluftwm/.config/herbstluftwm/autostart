@@ -66,7 +66,8 @@ hc keybind $Mod-Control-Up      resize up +$resizestep
 hc keybind $Mod-Control-Right   resize right +$resizestep
 
 # tags
-tag_names=( {1..9} )
+tag_names=("code" "term" "browser" "music" "slack" "services" "misc" "remote" "db")
+# tag_names=( {1..9} )
 tag_keys=( {1..9} 0 )
 
 hc rename default "${tag_names[0]}" || true
@@ -176,13 +177,17 @@ hc detect_monitors
     pids=( )
     # reserve some space for the panel on monitor 0
     hc pad 0 30 "" "" 0
-    hc pad 1 "" "" "" 0
-    hc pad 2 "" "" "" 0
+    hc pad 1 30 "" "" 0
+    hc pad 2 30 "" "" 0
+    # killall polybars
+    killall polybar
     # start the panel itself and remember its pid
+    for m in $(polybar --list-monitors | cut -d":" -f1); do
+        MONITOR=$m polybar --reload example &
+    done
     # polybar main &
     # polybar left &
     # polybar center &
-    budgie-panel &
     pids+=( $! )
     # or start another panel:
     # mypanel &
@@ -190,8 +195,7 @@ hc detect_monitors
     # wait until the panels should be stopped
     herbstclient -w '(quit_panel|reload)'
     # stopp all started panels
-    # kill ${pids[@]}
-    killall budgie-panel
+    kill ${pids[@]}
 } &one
 
 feh --bg-center ~/.wallpaper.jpg

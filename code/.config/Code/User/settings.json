@@ -1,9 +1,70 @@
 {
-    "editor.fontFamily": "Iosevka Term Medium",
-    "editor.fontSize": 14,
-    "vim.enableNeovim": true,
-    "vim.disableAnnoyingNeovimMessage": true,
-    "python.pythonPath": "/home/cllamach/.virtualenvs/controlpanel/bin/python",
+    // Editor visual
+    "workbench.sideBar.location": "right",
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": false,
+    "editor.lineNumbers": "off",
+    "editor.glyphMargin": true,
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+
+    // Python Linting
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.pylintEnabled": false,
+    "python.linting.maxNumberOfProblems": 100,
+    "python.linting.pylamaEnabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.mypyEnabled": false,
+    "python.formatting.provider": "autopep8",
+
+    // Git
+    "git.autofetch": true,
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
+    },
+    "gitlens.codeLens.authors.enabled": false,
+    "gitlens.codeLens.enabled": false,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.gitExplorer.files.layout": "tree",
+    "gitlens.hovers.annotations.enabled": false,
+    "gitlens.currentLine.enabled": false,
+
+    // Python autocompletion
+    "python.venvPath": "~/.virtualenvs",
+    "python.analysis.openFilesOnly": true,
+    "python.analsys.downloadChannel": "daily",
+    "python.autoUpdateLanguageServer": true,
+    "python.pythonPath": "/home/cllamach/.virtualenvs/pyls/bin/python",
+    "workbench.editor.openSideBySideDirection": "down",
+    "python.autoComplete.showAdvancedMembers": true,
+    "python.autoComplete.extraPaths": [
+        "/home/cllamach/Panopta/classic/src",
+    ],
+
+    // Misc options
+    "breadcrumbs.enabled": false,
+    "breadcrumbs.filePath": "last",
+    "breadcrumbs.symbolPath": "on",
+    "window.zoomLevel": 0,
+    "editor.tabCompletion": "on",
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    "editor.quickSuggestionsDelay": 0,
+    "editor.suggestSelection": "first",
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.snippetSuggestions": "top",
+    "editor.wordBasedSuggestions": true,
+    "editor.renderWhitespace": "boundary",
+    "editor.acceptSuggestionOnEnter": "smart",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "editor.rulers": [80, 100, 120],
+
+    // Excluded files
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -11,10 +72,23 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/*.pyc": true,
-        "**/*~": true,
     },
-    "editor.renderWhitespace": "none",
-    "window.zoomLevel": 0,
-    "editor.minimap.enabled": false,
-    "git.autofetch": true
+    "workbench.colorTheme": "One Monokai",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.cursorBlinking": "phase",
+    "editor.cursorStyle": "block",
+    "python.jediEnabled": false,
+    "githubPullRequests.hosts": [
+        {
+            "host": "https://github.com",
+            "username": "oauth",
+            "token": "system"
+        }
+    ],
+    "window.titleBarStyle": "custom",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+      }
 }

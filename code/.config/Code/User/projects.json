@@ -1,0 +1,104 @@
+[
+	{
+		"name": "controlpanel",
+		"rootPath": "$home/Panopta/classic/src/controlpanel",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "models",
+		"rootPath": "$home/Panopta/classic/src/models",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "tasks",
+		"rootPath": "$home/Panopta/classic/src/tasks",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "resultharvester",
+		"rootPath": "$home/Panopta/classic/src/resultharvester",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "aggregator",
+		"rootPath": "$home/Panopta/classic/src/aggregator",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "appliance",
+		"rootPath": "$home/Panopta/appliance",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "scripts",
+		"rootPath": "$home/Panopta/classic/src/scripts",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "api",
+		"rootPath": "$home/Panopta/classic/src/api",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "checker",
+		"rootPath": "$home/Panopta/classic/src/checker",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "agent",
+		"rootPath": "$home/Panopta/agent/src/linux",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "schema",
+		"rootPath": "$home/Panopta/classic/src/schema",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "status",
+		"rootPath": "$home/Panopta/classic/src/reports",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "metricpoller",
+		"rootPath": "$home/Panopta/classic/src/metricpoller",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "notifyengine",
+		"rootPath": "$home/Panopta/classic/src/notifyengine2",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "dashboards_v2",
+		"rootPath": "$home/Panopta/classic/src/dashboards_v2",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "build",
+		"rootPath": "$home/Panopta/build",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "infrastructure",
+		"rootPath": "$home/Panopta/infrastructure/src",
+		"paths": [],
+		"group": ""
+	}
+]

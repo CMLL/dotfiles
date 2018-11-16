@@ -98,8 +98,8 @@ set $w1 "1: "
 set $w2 "2: "
 set $w3 "3: "
 set $w4 "4: "
-set $w5 "5: "
-set $w6 "6: "
+set $w5 "5: "
+set $w6 "6: "
 set $w7 "7: "
 set $w8 "8: "
 set $w9 "9: "
@@ -196,7 +196,7 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightne
 # window controls
 #
 assign [class="(?i)(?:slack)"] $w5
-assign [class="(?i)(?:firefox)"] $w3
+assign [class="(?i)(?:firefox)"] $w6
 assign [class="(?i)(?:spotify)"] $w4
 assign [class="(?i)(?:DBeaver"] $w9
 
@@ -227,8 +227,8 @@ client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
-gaps inner 5
-gaps outer 3
+# gaps inner 5
+# gaps outer 3
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -257,6 +257,7 @@ exec --no-startup-id setxkbmap -option ctrl:nocaps
 
 # Screen layout
 exec --no-startup-id ./.triple.sh
+exec --no-startup-id arandr .screenlayout/panno.sh
 
 # Compton and wallpaper
 # exec --no-startup-id compton -b
@@ -276,3 +277,14 @@ exec --no-startup-id rescuetime
 # Dropbox
 exec --no-startup-id dropbox start
 
+# Add vizualization to the mopidy spotify
+exec --no-startup-id mopidy
+
+# Media Keys
+bindsym XF86AudioPlay exec mpc toggle
+bindsym XF86AudioPause exec mpc toggle
+bindsym XF86AudioNext exec mpc next
+bindsym XF86AudioPrev exec mpc previous
+
+# Emacs daemon
+exec --no-startup-id emacs --daemon

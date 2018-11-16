@@ -15,6 +15,9 @@
 ;; Disable Tool bar
 (tool-bar-mode 0)
 
+;; Tabs
+(setq tab-width 4)
+(setq indent-tabs-mode nil)
 
 ;; Evil
 (use-package evil
@@ -36,6 +39,9 @@
     "br" 'counsel-recentf
     "bd" 'dired
     "bb" 'ivy-switch-buffer
+    ;; Errors
+    "el" 'flycheck-list-errors
+    "ev" 'flycheck-verify-checker
     ;; Projectile
     "pp" 'projectile-switch-project
     "pf" 'counsel-projectile
@@ -121,56 +127,61 @@
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0.01)
+  (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 3)
   :bind
   ("C-SPC" . 'company-complete-common))
 
-;; LSP
-(use-package lsp-mode
-  :ensure t
-  :config
-  (setq create-lockfiles nil)
-  (require 'lsp-imenu)
-  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
-  (lsp-define-stdio-client lsp-python
-			   "python"
-			   (lambda () default-directory)
-			   '("pyls"))
-  (lsp-define-stdio-client lsp-rust
-			   "rls"
-			   (lambda () default-directory)
-			   '("rls"))
-  (add-hook 'python-mode-hook
-	    #'lsp-python-enable)
-  (add-hook 'python-mode-hook
-	    (lambda ()
-	      (when (> (buffer-size) 102400)
-		(message
-		 (concat "Buffer size %s larger than expected 102400 "
-			 " Turning off autocompletion")
-		 (buffer-size)
-		 (buffer-name))
-		(company-mode -1)
-		(kill-local-variable 'company-idle-delay)
-		(kill-local-variable 'company-backends))))
-  (add-hook 'rust-mode-hook
-	    #'lsp-rust-enable))
-
-
-;; Company LSP
-(use-package company-lsp
-  :ensure t
-  :config
-  (push 'company-lsp company-backends))
-
+;; Company Jedi
+;; (use-package company-jedi
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'company-backends 'company-jedi))
 
 ;; Elpy
 ;; (use-package elpy
 ;;   :ensure t
 ;;   :config
 ;;   (elpy-enable)
+;;   (setq eldoc-idle-delay 1)
 ;;   (add-to-list 'company-backends 'elpy-company-backend))
+
+;; LSP
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :config
+;;   (setq create-lockfiles nil)
+;;   (require 'lsp-imenu)
+;;   (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+;;   (lsp-define-stdio-client lsp-python
+;; 			   "python"
+;; 			   (lambda () default-directory)
+;; 			   '("pyls"))
+;;   (lsp-define-stdio-client lsp-rust
+;; 			   "rls"
+;; 			   (lambda () default-directory)
+;; 			   '("rls"))
+;;   (add-hook 'python-mode-hook
+;; 	    #'lsp-python-enable)
+;;   (add-hook 'python-mode-hook
+;; 	    (lambda ()
+;; 	      (when (> (buffer-size) 102400)
+;; 		(message
+;; 		 (concat "Buffer size %s larger than expected 102400 "
+;; 			 " Turning off autocompletion")
+;; 		 (buffer-size)
+;; 		 (buffer-name))
+;; 		(company-mode -1)
+;; 		(kill-local-variable 'company-idle-delay)
+;; 		(kill-local-variable 'company-backends))))
+;;   (add-hook 'rust-mode-hook
+;; 	    #'lsp-rust-enable))
+
+;; Company LSP
+(use-package company-lsp
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
 
 
 ;; Rust Mode
@@ -187,10 +198,22 @@
 (use-package flycheck
   :ensure t
   :config
+  (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
   (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-hook 'web-mode 'flycheck-mode)
   (setq
+   flycheck-disabled-checkers '(javascript-jshint)
    flycheck-highlighting-mode 'lines
-   flycheck-check-syntax-automatically '(mode-enabled save)))
+   flycheck-check-syntax-automatically '(mode-enabled save))
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-mode 'javascript-eslint 'javascript-mode))
+
+;; Path shell
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 ;; Which key
 (use-package which-key
@@ -251,7 +274,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (rust-mode yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline-all-the-icons ripgrep pyvenv package-safe-delete lsp-ui evil-nerd-commenter evil-magit evil-leader doom-themes counsel-projectile company-lsp))))
+    (eglot exec-path-from-shell add-node-modules-path vlf rust-mode yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline-all-the-icons ripgrep pyvenv package-safe-delete lsp-ui evil-nerd-commenter evil-magit evil-leader doom-themes counsel-projectile company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
