@@ -106,21 +106,23 @@ set $w9 "9: "
 set $w10 "10: "
 
 # Monitors
-set $h1 "HDMI-1"
+set $h1 "DP-1"
 set $h2 "HDMI-2"
 set $laptop "eDP-1"
 
 # Bind workspace to monitors
-# workspace $w1 output $h1
-# workspace $w2 output $h2
-# workspace $w3 output $h2
-# workspace $w4 output $laptop
-# workspace $w5 output $h1
-# workspace $w6 output $h1
-# workspace $w7 output $h1
-# workspace $w8 output $h2
+workspace $w1 output $h1
+workspace $w2 output $h2
+workspace $w3 output $h2
+workspace $w4 output $laptop
+workspace $w5 output $h2
+workspace $w6 output $h2
+workspace $w7 output $h2
+workspace $w8 output $h2
 
 # Move workspace between workspaces
+bindsym $mod+Shift+w move workspace to output up
+bindsym $mod+Shift+s move workspace to output down
 bindsym $mod+Shift+a move workspace to output left
 bindsym $mod+Shift+d move workspace to output right
 

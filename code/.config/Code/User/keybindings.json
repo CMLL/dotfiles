@@ -19,5 +19,21 @@
         "key": "up",
         "command": "-selectPrevSuggestion",
         "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "ctrl+k k",
+        "command": "workbench.action.splitEditorDown"
+    },
+    {
+        "key": "ctrl+k h",
+        "command": "workbench.action.splitEditorLeft"
+    },
+    {
+        "key": "ctrl+k l",
+        "command": "workbench.action.splitEditorRight"
+    },
+    {
+        "key": "ctrl+k j",
+        "command": "workbench.action.splitEditorUp"
     }
 ]
