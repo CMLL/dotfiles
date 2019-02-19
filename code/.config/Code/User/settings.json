@@ -4,17 +4,21 @@
     "editor.minimap.enabled": false,
     "editor.lineNumbers": "off",
     "editor.glyphMargin": true,
-    "editor.fontFamily": "DejaVu Sans Code",
+    "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
+    "editor.parameterHints.cycle": true,
     "python.analysis.logLevel": "Trace",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": false,
     "python.linting.pylintEnabled": false,
     "python.linting.maxNumberOfProblems": 100,
     "python.linting.pylamaEnabled": true,
+    "python.linting.pylamaArgs": ["-o", "/home/cllamach/.pylama.ini"],
     "python.linting.lintOnSave": true,
     "python.linting.mypyEnabled": false,
     "python.formatting.provider": "autopep8",
+    "workbench.editor.highlightModifiedTabs": true,
+    "explorer.sortOrder": "type",
 
     // Git
     "git.autofetch": true,
@@ -31,8 +35,8 @@
     "python.venvPath": "~/.virtualenvs",
     "python.analysis.openFilesOnly": true,
     "python.autoUpdateLanguageServer": true,
+    "python.analysis.downloadChannel": "daily",
     "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
-    "workbench.editor.openSideBySideDirection": "down",
     "python.autoComplete.showAdvancedMembers": true,
     "python.terminal.activateEnvironment": true,
     "breadcrumbs.filePath": "last",
@@ -46,13 +50,13 @@
         "comments": false,
         "strings": false
     },
-    "editor.quickSuggestionsDelay": 100,
     "editor.suggestSelection": "first",
     "editor.suggestOnTriggerCharacters": true,
     "editor.snippetSuggestions": "top",
     "editor.renderWhitespace": "boundary",
-    "editor.acceptSuggestionOnEnter": "smart",
+    "editor.acceptSuggestionOnEnter": "off",
     "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
     "files.insertFinalNewline": true,
     "editor.rulers": [80, 100, 120],
 
@@ -65,7 +69,7 @@
         "**/.DS_Store": true,
         "**/*.pyc": true,
     },
-    "workbench.colorTheme": "Ayu Mirage",
+    "workbench.colorTheme": "Atom One Dark",
     "editor.cursorBlinking": "phase",
     "editor.cursorStyle": "block",
     "window.titleBarStyle": "custom",
@@ -80,7 +84,77 @@
     "terminal.integrated.rendererType": "dom",
     "editor.wordBasedSuggestions": false,
     "window.zoomLevel": 0,
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "material-icon-theme",
     "gitlens.views.repositories.files.layout": "tree",
-    "python.jediEnabled": false
+
+    // Vim settings
+    "vim.sneak": true,
+    "vim.leader": "<space>",
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["<leader>", "o"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "workbench.action.quickOpen"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "p"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "projectManager.listProjects"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "f"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "actions.find"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "w"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "workbench.action.closeActiveEditor"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "i"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "workbench.action.gotoSymbol"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "tab"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "workbench.action.openNextRecentlyUsedEditorInGroup"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "t"],
+            "after": [],
+            "commands": [
+                {
+                    "command": "workbench.action.terminal.focus",
+                },
+            ]
+        }
+    ],
+    "python.jediEnabled": false,
+    "editor.fontSize": 16
 }

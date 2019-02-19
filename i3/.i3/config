@@ -69,6 +69,9 @@ bindsym $mod+g split h
 # split in vertical orientation
 bindsym $mod+v split v
 
+# change the direction of the split
+bindsym $mod+t split toggle
+
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
@@ -280,7 +283,7 @@ exec --no-startup-id rescuetime
 exec --no-startup-id dropbox start
 
 # Add vizualization to the mopidy spotify
-exec --no-startup-id mopidy
+# exec --no-startup-id mopidy
 
 # Media Keys
 bindsym XF86AudioPlay exec mpc toggle
@@ -289,4 +292,10 @@ bindsym XF86AudioNext exec mpc next
 bindsym XF86AudioPrev exec mpc previous
 
 # Emacs daemon
-exec --no-startup-id emacs --daemon
+# exec --no-startup-id emacs --daemon
+
+# Exec MailHog
+exec --no-startup-id MailHog
+
+# Bind Ranger
+bindsym $mod+p exec tilix -e ranger

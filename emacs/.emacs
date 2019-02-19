@@ -147,35 +147,35 @@
 ;;   (add-to-list 'company-backends 'elpy-company-backend))
 
 ;; LSP
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :config
-;;   (setq create-lockfiles nil)
-;;   (require 'lsp-imenu)
-;;   (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
-;;   (lsp-define-stdio-client lsp-python
-;; 			   "python"
-;; 			   (lambda () default-directory)
-;; 			   '("pyls"))
-;;   (lsp-define-stdio-client lsp-rust
-;; 			   "rls"
-;; 			   (lambda () default-directory)
-;; 			   '("rls"))
-;;   (add-hook 'python-mode-hook
-;; 	    #'lsp-python-enable)
-;;   (add-hook 'python-mode-hook
-;; 	    (lambda ()
-;; 	      (when (> (buffer-size) 102400)
-;; 		(message
-;; 		 (concat "Buffer size %s larger than expected 102400 "
-;; 			 " Turning off autocompletion")
-;; 		 (buffer-size)
-;; 		 (buffer-name))
-;; 		(company-mode -1)
-;; 		(kill-local-variable 'company-idle-delay)
-;; 		(kill-local-variable 'company-backends))))
-;;   (add-hook 'rust-mode-hook
-;; 	    #'lsp-rust-enable))
+(use-package lsp-mode
+  :ensure t
+  :config
+  (setq create-lockfiles nil)
+  (require 'lsp-imenu)
+  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+  (lsp-define-stdio-client lsp-python
+			   "python"
+			   (lambda () default-directory)
+			   '("pyls"))
+  (lsp-define-stdio-client lsp-rust
+			   "rls"
+			   (lambda () default-directory)
+			   '("rls"))
+  (add-hook 'python-mode-hook
+	    #'lsp-python-enable)
+  (add-hook 'python-mode-hook
+	    (lambda ()
+	      (when (> (buffer-size) 102400)
+		(message
+		 (concat "Buffer size %s larger than expected 102400 "
+			 " Turning off autocompletion")
+		 (buffer-size)
+		 (buffer-name))
+		(company-mode -1)
+		(kill-local-variable 'company-idle-delay)
+		(kill-local-variable 'company-backends))))
+  (add-hook 'rust-mode-hook
+	    #'lsp-rust-enable))
 
 ;; Company LSP
 (use-package company-lsp
