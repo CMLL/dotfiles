@@ -7,7 +7,6 @@
     "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
     "editor.parameterHints.cycle": true,
-    "python.analysis.logLevel": "Trace",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": false,
     "python.linting.pylintEnabled": false,
@@ -35,14 +34,16 @@
     "python.venvPath": "~/.virtualenvs",
     "python.analysis.openFilesOnly": true,
     "python.autoUpdateLanguageServer": true,
-    "python.analysis.downloadChannel": "daily",
+    "python.analysis.downloadChannel": "beta",
+    // "python.analysis.logLevel": "Trace",
     "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
     "python.autoComplete.showAdvancedMembers": true,
     "python.terminal.activateEnvironment": true,
     "breadcrumbs.filePath": "last",
     "breadcrumbs.symbolPath": "on",
     "python.autoComplete.extraPaths": [
-        "/home/cllamach/Panopta/classic/src/"
+        "/home/cllamach/Panopta/classic/src/",
+        "/home/cllamach/Panopta/agent/src/linux"
     ],
     "editor.tabCompletion": "on",
     "editor.quickSuggestions": {
@@ -50,11 +51,11 @@
         "comments": false,
         "strings": false
     },
-    "editor.suggestSelection": "first",
+    "editor.suggestSelection": "recentlyUsed",
     "editor.suggestOnTriggerCharacters": true,
     "editor.snippetSuggestions": "top",
     "editor.renderWhitespace": "boundary",
-    "editor.acceptSuggestionOnEnter": "off",
+    "editor.acceptSuggestionOnEnter": "on",
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
     "files.insertFinalNewline": true,
@@ -69,7 +70,6 @@
         "**/.DS_Store": true,
         "**/*.pyc": true,
     },
-    "workbench.colorTheme": "Atom One Dark",
     "editor.cursorBlinking": "phase",
     "editor.cursorStyle": "block",
     "window.titleBarStyle": "custom",
@@ -90,6 +90,46 @@
     // Vim settings
     "vim.sneak": true,
     "vim.leader": "<space>",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [":"],
+            "commands": [
+                "workbench.action.showCommands"
+            ]
+        },
+        {
+            "before": [
+                "p"
+            ],
+            "after": [
+                "p", "g", "v", "y"
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                ">"
+            ],
+            "commands": [
+                "editor.action.indentLines"
+            ]
+        },
+        {
+            "before": [
+                "<"
+            ],
+            "commands": [
+                "editor.action.outdentLines"
+            ]
+        },
+    ],
     "vim.normalModeKeyBindings": [
         {
             "before": ["<leader>", "o"],
@@ -153,8 +193,32 @@
                     "command": "workbench.action.terminal.focus",
                 },
             ]
+        },
+        {
+            "before": ["<leader>", "r"],
+            "commands": [
+                {
+                "command": "workbench.action.tasks.runTask"
+                }
+            ]
         }
     ],
     "python.jediEnabled": false,
-    "editor.fontSize": 16
+    "editor.fontSize": 16,
+    "workbench.colorTheme": "One Dark Pro",
+
+    // Launch configuration
+    "launch": {
+        "configurations": [
+            {
+                "type": "python",
+                "request": "launch",
+                "name": "Controlpanel",
+                "program": "/home/cllamach/Panopta/classic/src/controlpanel/start-ControlPanel.py",
+                "args": [
+                    "controlpanel.cfg"
+                ]
+            }
+        ],
+    },
 }

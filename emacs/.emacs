@@ -5,6 +5,7 @@
              '("melpa" . "https://melpa.org/packages/"))
 
 (package-initialize)
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 
 ;; Bootstrap `use-package'
@@ -132,57 +133,42 @@
   :bind
   ("C-SPC" . 'company-complete-common))
 
-;; Company Jedi
-;; (use-package company-jedi
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'company-backends 'company-jedi))
+;; LSP Python MS
+(use-package lsp-python-ms
+  :demand
+  :load-path "~/.emacs.d/lisp/lsp-python-ms"
+  :ensure nil
+  :hook (python-mode . lsp)
+  :config
+  (setq lsp-python-ms-dir
+	(expand-file-name "~/python-language-server/output/bin/Release/"))
+  (setq lsp-python-ms-executable
+	"~/bin/Microsoft.Python.LanguageServer"))
 
-;; Elpy
-;; (use-package elpy
-;;   :ensure t
-;;   :config
-;;   (elpy-enable)
-;;   (setq eldoc-idle-delay 1)
-;;   (add-to-list 'company-backends 'elpy-company-backend))
+(provide 'init-python)
 
 ;; LSP
 (use-package lsp-mode
   :ensure t
-  :config
-  (setq create-lockfiles nil)
-  (require 'lsp-imenu)
-  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
-  (lsp-define-stdio-client lsp-python
-			   "python"
-			   (lambda () default-directory)
-			   '("pyls"))
-  (lsp-define-stdio-client lsp-rust
-			   "rls"
-			   (lambda () default-directory)
-			   '("rls"))
-  (add-hook 'python-mode-hook
-	    #'lsp-python-enable)
-  (add-hook 'python-mode-hook
-	    (lambda ()
-	      (when (> (buffer-size) 102400)
-		(message
-		 (concat "Buffer size %s larger than expected 102400 "
-			 " Turning off autocompletion")
-		 (buffer-size)
-		 (buffer-name))
-		(company-mode -1)
-		(kill-local-variable 'company-idle-delay)
-		(kill-local-variable 'company-backends))))
-  (add-hook 'rust-mode-hook
-	    #'lsp-rust-enable))
+  :commands lsp
+  :hook
+  (python-mode . lsp)
+  :init
+  (setq lsp-prefer-flymake nil))
+  ;; :config
+  ;; (lsp-define-stdio-client lsp-rust
+  ;; 			   "rls"
+  ;; 			   (lambda () default-directory)
+  ;; 			   '("rls"))
+  ;; (add-hook 'rust-mode-hook
+  ;; 	    #'lsp-rust-enable))
 
-;; Company LSP
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :commands lsp-ui-mode)
+
 (use-package company-lsp
-  :ensure t
-  :config
-  (push 'company-lsp company-backends))
-
+  :ensure t)
 
 ;; Rust Mode
 (use-package rust-mode
@@ -274,7 +260,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (eglot exec-path-from-shell add-node-modules-path vlf rust-mode yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline-all-the-icons ripgrep pyvenv package-safe-delete lsp-ui evil-nerd-commenter evil-magit evil-leader doom-themes counsel-projectile company-lsp))))
+    (ms-python eglot exec-path-from-shell add-node-modules-path vlf rust-mode yasnippet-snippets which-key web-mode use-package treemacs-projectile treemacs-evil spaceline-all-the-icons ripgrep pyvenv package-safe-delete lsp-ui evil-nerd-commenter evil-magit evil-leader doom-themes counsel-projectile company-lsp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

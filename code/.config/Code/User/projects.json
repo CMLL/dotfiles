@@ -1,103 +1,135 @@
-[{
+[
+	{
 		"name": "controlpanel",
 		"rootPath": "$home/Panopta/classic/src/controlpanel",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "models",
 		"rootPath": "$home/Panopta/classic/src/models",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "tasks",
 		"rootPath": "$home/Panopta/classic/src/tasks",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "resultharvester",
 		"rootPath": "$home/Panopta/classic/src/resultharvester",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "aggregator",
 		"rootPath": "$home/Panopta/classic/src/aggregator",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "appliance",
 		"rootPath": "$home/Panopta/appliance",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "scripts",
 		"rootPath": "$home/Panopta/classic/src/scripts",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "api",
 		"rootPath": "$home/Panopta/classic/src/api",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "checker",
 		"rootPath": "$home/Panopta/classic/src/checker",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "agent",
 		"rootPath": "$home/Panopta/agent/src/linux",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "schema",
 		"rootPath": "$home/Panopta/classic/src/schema",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "status",
 		"rootPath": "$home/Panopta/classic/src/reports",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "metricpoller",
 		"rootPath": "$home/Panopta/classic/src/metricpoller",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "notifyengine",
 		"rootPath": "$home/Panopta/classic/src/notifyengine2",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "dashboards_v2",
 		"rootPath": "$home/Panopta/classic/src/dashboards_v2",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "build",
 		"rootPath": "$home/Panopta/build",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "infrastructure",
 		"rootPath": "$home/Panopta/infrastructure/src",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
+	},
+	{
+		"name": "classic",
+		"rootPath": "/home/cllamach/Panopta/classic",
+		"paths": [],
+		"group": "",
+		"enabled": true
+	},
+	{
+		"name": "panopta-pat",
+		"rootPath": "/home/cllamach/Panopta/panopta-pat",
+		"paths": [],
+		"group": "",
+		"enabled": true
 	}
 ]
