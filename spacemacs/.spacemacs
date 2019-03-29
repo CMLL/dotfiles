@@ -371,6 +371,14 @@ you should place your code here."
 
   (setq company-backends-python-mode '(company-lsp))
 
+  ;; LSP MS
+  (use-package lsp-python-ms
+    :ensure nil
+    :hook (python-mode . lsp)
+    :config
+    (setq lsp-python-ms-executable
+    	"Microsoft.Python.LanguageServer"))
+
 
   ;; Extra python paths
   ;; (require 'anaconda-mode)
