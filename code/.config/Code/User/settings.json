@@ -36,7 +36,8 @@
     "python.autoUpdateLanguageServer": true,
     "python.analysis.downloadChannel": "beta",
     // "python.analysis.logLevel": "Trace",
-    "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
+    // "python.downloadLanguageServer": false,
+    // "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
     "python.autoComplete.showAdvancedMembers": true,
     "python.terminal.activateEnvironment": true,
     "breadcrumbs.filePath": "last",
@@ -199,6 +200,14 @@
             "commands": [
                 {
                 "command": "workbench.action.tasks.runTask"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "e"],
+            "commands": [
+                {
+                    "command": "python.runCurrentTestFile"
                 }
             ]
         }
