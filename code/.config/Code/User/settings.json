@@ -36,23 +36,25 @@
     "python.autoUpdateLanguageServer": true,
     "python.analysis.downloadChannel": "beta",
     // "python.analysis.logLevel": "Trace",
-    // "python.downloadLanguageServer": false,
-    // "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
+    "python.downloadLanguageServer": false,
+    "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
     "python.autoComplete.showAdvancedMembers": true,
     "python.terminal.activateEnvironment": true,
     "breadcrumbs.filePath": "last",
     "breadcrumbs.symbolPath": "on",
     "python.autoComplete.extraPaths": [
-        "/home/cllamach/Panopta/classic/src/",
-        "/home/cllamach/Panopta/agent/src/linux"
+        "/home/cllamach/Panopta/classic/src/"
     ],
+    "python.envFile": "/home/cllamach/Panopta/classic/dev_variables.env",
+
+    // Edit
     "editor.tabCompletion": "on",
     "editor.quickSuggestions": {
         "other": true,
         "comments": false,
         "strings": false
     },
-    "editor.suggestSelection": "recentlyUsed",
+    "editor.suggestSelection": "first",
     "editor.suggestOnTriggerCharacters": true,
     "editor.snippetSuggestions": "top",
     "editor.renderWhitespace": "boundary",
@@ -71,8 +73,6 @@
         "**/.DS_Store": true,
         "**/*.pyc": true,
     },
-    "editor.cursorBlinking": "phase",
-    "editor.cursorStyle": "block",
     "window.titleBarStyle": "custom",
     "files.watcherExclude": {
         "**/.git/objects/**": true,
@@ -91,6 +91,9 @@
     // Vim settings
     "vim.sneak": true,
     "vim.leader": "<space>",
+    "vim.easymotion": true,
+    "vim.easymotionMarkerHeight": 18,
+    "vim.easymotionMarkerFontSize": "16",
     "vim.insertModeKeyBindings": [
         {
             "before": ["j", "j"],
@@ -104,14 +107,6 @@
                 "workbench.action.showCommands"
             ]
         },
-        {
-            "before": [
-                "p"
-            ],
-            "after": [
-                "p", "g", "v", "y"
-            ]
-        }
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {
@@ -210,10 +205,29 @@
                     "command": "python.runCurrentTestFile"
                 }
             ]
+        },
+        {
+            "before": ["<leader>", "["],
+            "commands": [
+                {
+                    "command": "workbench.action.toggleSidebarVisibility"
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "m"],
+            "commands": [
+                "bookmarks.toggle"
+            ]
+        },
+        {
+            "before": ["<leader>", "b"],
+            "commands": [
+                "bookmarks.list"
+            ]
         }
     ],
     "python.jediEnabled": false,
-    "editor.fontSize": 16,
     "workbench.colorTheme": "One Dark Pro",
 
     // Launch configuration
@@ -230,4 +244,13 @@
             }
         ],
     },
+    "vsintellicode.modify.editor.suggestSelection": "choseToUpdateConfiguration",
+    "[html]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "editor.cursorBlinking": "expand",
+    "editor.suggest.maxVisibleSuggestions": 15,
+    "editor.quickSuggestionsDelay": 5,
+    "editor.fontSize": 14,
+    "workbench.sideBar.location": "left",
 }
