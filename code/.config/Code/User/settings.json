@@ -36,15 +36,12 @@
     "python.autoUpdateLanguageServer": true,
     "python.analysis.downloadChannel": "beta",
     // "python.analysis.logLevel": "Trace",
-    "python.downloadLanguageServer": false,
+    // "python.downloadLanguageServer": false,
     "python.pythonPath": "/home/cllamach/.virtualenvs/panopta_env/bin/python",
     "python.autoComplete.showAdvancedMembers": true,
     "python.terminal.activateEnvironment": true,
     "breadcrumbs.filePath": "last",
     "breadcrumbs.symbolPath": "on",
-    "python.autoComplete.extraPaths": [
-        "/home/cllamach/Panopta/classic/src/"
-    ],
     "python.envFile": "/home/cllamach/Panopta/classic/dev_variables.env",
 
     // Edit
@@ -56,7 +53,7 @@
     },
     "editor.suggestSelection": "first",
     "editor.suggestOnTriggerCharacters": true,
-    "editor.snippetSuggestions": "top",
+    "editor.snippetSuggestions": "bottom",
     "editor.renderWhitespace": "boundary",
     "editor.acceptSuggestionOnEnter": "on",
     "files.trimTrailingWhitespace": true,
@@ -228,7 +225,6 @@
         }
     ],
     "python.jediEnabled": false,
-    "workbench.colorTheme": "One Dark Pro",
 
     // Launch configuration
     "launch": {
@@ -253,4 +249,5 @@
     "editor.quickSuggestionsDelay": 5,
     "editor.fontSize": 14,
     "workbench.sideBar.location": "left",
+    "workbench.colorTheme": "Gatito Theme",
 }
