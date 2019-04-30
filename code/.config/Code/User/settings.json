@@ -82,7 +82,7 @@
     "terminal.integrated.rendererType": "dom",
     "editor.wordBasedSuggestions": false,
     "window.zoomLevel": 0,
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "vscode-great-icons",
     "gitlens.views.repositories.files.layout": "tree",
 
     // Vim settings
@@ -245,9 +245,9 @@
         "editor.defaultFormatter": "HookyQR.beautify"
     },
     "editor.cursorBlinking": "expand",
-    "editor.suggest.maxVisibleSuggestions": 15,
-    "editor.quickSuggestionsDelay": 5,
+    // "editor.suggest.maxVisibleSuggestions": 20,
+    // "editor.quickSuggestionsDelay": 5,
     "editor.fontSize": 14,
     "workbench.sideBar.location": "left",
-    "workbench.colorTheme": "Gatito Theme",
+    "workbench.colorTheme": "Noctis Azureus",
 }
