@@ -1,0 +1,14 @@
+repos:
+  - repo: local
+    # Python Hooks
+    hooks:
+      - id: ruff_lint
+        name: Ruff Lint
+        language: python
+        entry: ruff check
+        files: '\\.py$'
+      - id: ruff_format
+        name: Ruff Format
+        language: python
+        entry: ruff format --check
+        files: '\\.py$'
