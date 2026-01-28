@@ -1,0 +1,4 @@
+project-includes = ["src"]
+search-path = ["src"]
+python-version = "3.14"
+python-interpreter-path = ".venv/bin/python3"
