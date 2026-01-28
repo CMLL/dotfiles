@@ -6,9 +6,14 @@ repos:
         name: Ruff Lint
         language: python
         entry: ruff check
-        files: '\\.py$'
+        files: '\.py$'
       - id: ruff_format
         name: Ruff Format
         language: python
         entry: ruff format --check
-        files: '\\.py$'
+        files: '\.py$'
+      - id: type_check
+        name: Type Checking
+        language: python
+        entry: pyrefly check
+        files: '\.py$'
