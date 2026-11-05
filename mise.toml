@@ -1,0 +1,21 @@
+# Dotfiles deployment.
+#
+#   mise trust                 # once, in this directory
+#   mise dot status            # show entry state, change nothing
+#   mise dot diff              # show what apply would change
+#   mise dot apply             # symlink nvim + zed into place
+#
+# A conflicting target aborts the whole apply and nothing is linked.
+# `mise dot apply --force` replaces conflicting targets *without a backup*:
+# move them aside yourself first.
+#
+# Targets resolve under $XDG_CONFIG_HOME (defaults to ~/.config).
+# Add a package by adding another [dotfiles."~/.config/<name>"] entry.
+
+[dotfiles."~/.config/nvim"]
+source = "nvim"
+mode = "symlink"
+
+[dotfiles."~/.config/zed"]
+source = "zed"
+mode = "symlink"

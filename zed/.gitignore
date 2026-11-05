@@ -1,0 +1,8 @@
+# This directory is symlinked to ~/.config/zed; Zed writes runtime state here.
+.DS_Store
+conversations/
+embeddings/
+prompts/
+themes/
+development_credentials
+*_backup.json
