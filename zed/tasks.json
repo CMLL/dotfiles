@@ -1,0 +1,30 @@
+// Static tasks configuration.
+//
+// Example:
+[
+  {
+    "label": "Cargo build",
+    "command": "cargo build",
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "on_success",
+  },
+  {
+    "label": "Cargo run",
+    "command": "cargo run",
+    "reveal": "always",
+    "reveal_target": "dock",
+  },
+  {
+    "label": "Pre commit",
+    "command": "prek",
+    "reveal_target": "dock",
+    "hide": "on_success",
+  },
+  {
+    "label": "Nextest",
+    "command": "cargo nextest run",
+    "reveal_target": "dock",
+    "hide": "never",
+  },
+]

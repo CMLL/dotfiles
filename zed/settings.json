@@ -1,0 +1,178 @@
+/// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette
+{
+  "diff_view_style": "unified",
+  "cli_default_open_behavior": "new_window",
+  "agent_servers": {
+    "pi-acp": {
+      "type": "registry"
+    },
+    "opencode": {
+      "type": "registry",
+    },
+    "claude-acp": {
+      "favorite_config_option_values": {
+        "mode": ["plan"],
+      },
+      "default_config_options": {
+        "model": "default",
+        "mode": "auto",
+      },
+      "type": "registry",
+    },
+  },
+  "vim": {
+    "toggle_relative_line_numbers": true,
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "outline_panel": {
+    "dock": "left",
+  },
+  "collaboration_panel": {
+    "dock": "left",
+  },
+  "git_panel": {
+    "dock": "left",
+  },
+  "ui_font_family": "Verdana",
+  "buffer_line_height": "standard",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Bearded Icon Theme",
+    "dark": "Bearded Icon Theme",
+  },
+  "show_edit_predictions": false,
+  "agent": {
+    "dock": "right",
+    "default_model": {
+      "effort": "high",
+      "enable_thinking": true,
+      "provider": "anthropic",
+      "model": "claude-opus-4-8",
+    },
+    "model_parameters": [],
+  },
+  "vim_mode": true,
+  "helix_mode": false,
+  "ui_font_size": 16,
+  "buffer_font_size": 16.0,
+  "buffer_font_family": "Lekton Nerd Font",
+  "theme": {
+    "mode": "dark",
+    "light": "Dayfox - blurred",
+    "dark": "Catppuccin Mocha",
+  },
+  "cursor_blink": true,
+  "relative_line_numbers": "enabled",
+  "inlay_hints": {
+    "enabled": true,
+  },
+  "lsp": {
+    "pyrefly": {
+      "binary": {
+        "arguments": ["lsp"],
+      },
+    },
+    "gopls": {
+      "initialization_options": {
+        "staticcheck": true
+      }
+    },
+    "rust-analyzer": {
+      "initialization_options": {
+        "check": {"command": "clippy"}
+      },
+      "binary": {
+        "env": {
+          // To handle installations of opencv.
+          "DYLD_FALLBACK_LIBRARY_PATH": "/opt/homebrew/opt/llvm/lib",
+          "LIBCLANG_PATH": "/opt/homebrew/opt/llvm/lib"
+        },
+      }
+    }
+  },
+  "languages": {
+    "Python": {
+      "language_servers": ["pyrefly", "!ty", "ruff", "!pyright", "!zuban"],
+      "format_on_save": "on",
+      "formatter": [
+        { "code_action": "source.organizeImports.ruff" },
+        { "code_action": "source.fixAll.ruff" },
+        {
+          "language_server": {
+            "name": "ruff",
+          },
+        },
+      ],
+    },
+    "Rust": {
+      "formatter": "language_server",
+      "format_on_save": "on",
+    },
+    "Go": {
+      "formatter": "language_server",
+      "format_on_save": "on",
+    },
+  },
+  // Diagnostics
+  "diagnostics": {
+    "button": true,
+    "include_warnings": true,
+    "lsp_pull_diagnostics": {
+      "enabled": true,
+      "debounce_ms": 50,
+    },
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 150,
+      "padding": 4,
+      "min_column": 0,
+      "max_severity": null,
+    },
+  },
+  "terminal": {
+    "font_size": 14.0,
+    "font_family": "VictorMono Nerd Font",
+    "shell": null,
+    "detect_venv": {
+      "on": {
+        "activate_script": "fish",
+      },
+    },
+    "env": {
+      "EDITOR": "zed --wait",
+      "VISUAL": "zed --wait",
+    },
+  },
+  // Exclude these folders for scan.
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/.vscode",
+    "**/.idea",
+    "**/node_modules",
+    "**/.serverless",
+    "**/build",
+    "**/dist",
+    "**/coverage",
+    "**/.venv",
+    "**/__pycache__",
+    "**/.ropeproject",
+    "**/.pytest_cache",
+    "**/.ruff_cache",
+  ],
+}

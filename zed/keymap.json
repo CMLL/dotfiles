@@ -1,0 +1,200 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "shift shift": "file_finder::Toggle",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
+  },
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
+  },
+  {
+    "context": "vim_mode == normal || vim_mode == visual",
+    "bindings": {
+      "s": "vim::PushSneak",
+      "S": "vim::PushSneakBackward",
+    },
+  },
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      "b": "vim::AnyBrackets",
+      "q": "vim::AnyQuotes",
+    },
+  },
+  {
+    "context": "Pane",
+    "use_key_equivalents": true,
+    "bindings": {
+      "cmd-1": ["pane::ActivateItem", 0],
+      "cmd-2": ["pane::ActivateItem", 1],
+      "cmd-3": ["pane::ActivateItem", 2],
+      "cmd-4": ["pane::ActivateItem", 3],
+      "cmd-5": ["pane::ActivateItem", 4],
+      "cmd-6": ["pane::ActivateItem", 5],
+      "cmd-7": ["pane::ActivateItem", 6],
+      "cmd-8": ["pane::ActivateItem", 7],
+      "cmd-9": ["pane::ActivateItem", 8],
+    },
+  },
+  // File panel (netrw)
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "A": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      // Close project panel as project file panel on the right
+      "q": "workspace::ToggleLeftDock",
+      ":": "command_palette::Toggle",
+      "%": "project_panel::NewFile",
+      "/": "project_panel::NewSearchInDirectory",
+      "enter": "project_panel::OpenPermanent",
+      "escape": "project_panel::ToggleFocus",
+      "h": "project_panel::CollapseSelectedEntry",
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrevious",
+      "l": "project_panel::ExpandSelectedEntry",
+      "o": "project_panel::OpenPermanent",
+      "shift-d": "project_panel::Delete",
+      "shift-r": "project_panel::Rename",
+      "t": "project_panel::OpenPermanent",
+      "v": "project_panel::OpenPermanent",
+      "shift-g": "menu::SelectLast",
+      "g g": "menu::SelectFirst",
+      "-": "project_panel::SelectParent",
+    },
+  },
+  // Empty pane, set of keybindings that are available when there is no active editor
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      // Open file finder
+      "space space": "file_finder::Toggle",
+      // New file
+      "space f n": "workspace::NewFile",
+      // Open recent project
+      "space f p": "projects::OpenRecent",
+      // Search in all the files
+      "space s g": "workspace::NewSearch",
+      // Quit zed
+      "space q q": "zed::Quit",
+    },
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      // Navigation
+      "g w": "vim::HelixJumpToWord",
+      "g r": "editor::FindAllReferences",
+      "g i": "editor::GoToImplementation",
+      // Refactoring
+      "space c r ": "editor::Rename",
+      // Git
+      "space g g": "git_panel::ToggleFocus",
+      "space g c": "git::CheckoutBranch",
+      "space g p": "git::Pull",
+      "space g P": "git::Push",
+      "space g C": "git::Commit",
+      // Toggle inlay hints
+      "space u i": "editor::ToggleInlayHints",
+      // Open recent project
+      "space f p": "projects::OpenRecent",
+      // Tab things. Almost as good as harpoon.
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "space b b": "tab_switcher::Toggle",
+      // Close buffer
+      "space b d": "pane::CloseActiveItem",
+      // Close inactive buffers
+      "space b q": "pane::CloseOtherItems",
+      "space b p": "pane::TogglePinTab",
+      // New file
+      "space f n": "workspace::NewFile",
+      // Search in all the files
+      "space /": "workspace::NewSearch",
+      // Git
+      "space g b": "git::Blame",
+      // LSP & Code actions
+      "space a": "editor::ToggleCodeActions",
+      "space d": "diagnostics::Deploy",
+      "space s": "outline::Toggle",
+      "space S": "project_symbols::Toggle",
+      // Format
+      "space c f": "editor::Format",
+      // Quit zed
+      "space q q": "zed::Quit",
+      // Project Panel View
+      "space e": "project_panel::ToggleFocus",
+      // Outline Panel
+      "space o": "outline_panel::ToggleFocus",
+      // Debugging
+      "space r d": "debugger::Start",
+      "space r b": "editor::ToggleBreakpoint",
+      // Windows management
+      "space w n": "workspace::NewWindow",
+      "space w o": "workspace::Open",
+      "space w q": "workspace::CloseWindow",
+      "space -": "pane::SplitDown",
+      "space |": "pane::SplitRight",
+      "space w d": "pane::CloseAllItems",
+      // Tasks and debugging
+      "space t r": "task::Spawn",
+      "space t t": "task::Rerun",
+      "space d r": "debugger::Start",
+      "space d d": "debugger::Rerun",
+      "space d b": "editor::ToggleBreakpoint",
+      // Jump to hunks
+      "] h": "editor::GoToHunk",
+      "[ h": "editor::GoToPreviousHunk",
+      "] c": "editor::GoToHunk",
+      "[ c": "editor::GoToPreviousHunk",
+      // Jump to diagnostic
+      "; j": "editor::GoToDiagnostic",
+      "; k": "editor::GoToPreviousDiagnostic",
+      // "] e": "editor::GoToDiagnostic",
+      // "[ e": "editor::GoToPreviousDiagnostic",
+      // Excerpts
+      "] q": "editor::MoveToStartOfNextExcerpt",
+      "[ q": "editor::MoveToStartOfExcerpt",
+      // Lsp info
+      "space c l": "dev::OpenLanguageServerLogs",
+      "space c d": "editor::ToggleInlineDiagnostics",
+    },
+  },
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      // mini.ai plugin behavior
+      "q": "vim::MiniQuotes",
+      "b": "vim::MiniBrackets",
+    },
+  },
+]
